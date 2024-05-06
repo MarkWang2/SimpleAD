@@ -28,7 +28,6 @@ const Ad = (props) => {
   }
 
   const defineSlot = () => {
-    debugger
     const defaultRequestSize = '330x250'
     const responsiveAdSlot = googletag.defineSlot(adUnit, defaultRequestSize,
       id).

@@ -1,12 +1,19 @@
 import Image from "next/image";
 import styles from "./page.module.css";
 import Ad from '@/app/components/Ad'
+import { Button, Space, DatePicker, version } from 'antd';
 
 export default function Home() {
   return (
     <main className={styles.main}>
+      <div style={{ padding: '0 24px' }}>
+        <Space>
+          <DatePicker/>
+          <Button type="primary">Primary Button</Button>
+        </Space>
+      </div>
       <div className={styles.description}>
-             <Ad id="lead2" position="lead2" adUnit='/21719121593/ACT/Homepage' />
+        <Ad id="lead2" position="lead2" adUnit='/21719121593/ACT/Homepage'/>
         <p>
           Get started by editing&nbsp;
           <code className={styles.code}>app/page.js</code>
