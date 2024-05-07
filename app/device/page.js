@@ -8,9 +8,7 @@ const App = () => {
   const [form] = Form.useForm()
 
   const onFinish = async (values) => {
-     for (const device of values.devices) {
-      await createDevice(device)
-    }
+    await createDevice(values.devices);
   }
   return (
     <Form
