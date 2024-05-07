@@ -1,8 +1,8 @@
 'use client'
-import { Inter } from 'next/font/google'
 import './globals.css'
 import Script from 'next/script'
 import { Breadcrumb, Layout, Menu, theme } from 'antd'
+import { useRouter } from 'next/navigation'
 import { AntdRegistry } from '@ant-design/nextjs-registry'
 import React from 'react'
 
@@ -34,9 +34,11 @@ const items2 = [UserOutlined, LaptopOutlined, NotificationOutlined].map(
     }
   })
 
-const inter = Inter({ subsets: ['latin'] })
-
 export default function RootLayout ({ children }) {
+  const router = useRouter()
+  const handleMenuClick = ({ item, key, keyPath, domEvent }) => {
+  router.push('/dashboard')
+}
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken()
@@ -64,6 +66,7 @@ export default function RootLayout ({ children }) {
             mode="horizontal"
             defaultSelectedKeys={['2']}
             items={items1}
+            onClick={handleMenuClick}
             style={{
               flex: 1,
               minWidth: 0,
