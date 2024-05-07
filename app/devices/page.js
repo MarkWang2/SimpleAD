@@ -2,6 +2,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
 import { Flex, Input, Tag, theme, Tooltip } from 'antd';
+import AdModel from '@/app/models/adModel'
 const tagInputStyle = {
   width: 64,
   height: 22,
@@ -10,7 +11,7 @@ const tagInputStyle = {
 };
 const Devices = () => {
   const { token } = theme.useToken();
-  const [tags, setTags] = useState(['0-0999', '767-0', '1024-0']);
+  const [tags, setTags] = useState(AdModel.getDevices);
   const [inputVisible, setInputVisible] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const [editInputIndex, setEditInputIndex] = useState(-1);
@@ -29,8 +30,7 @@ const Devices = () => {
     const newTags = tags.filter((tag) => tag !== removedTag);
     console.log(newTags);
     setTags(newTags);
-    window.ad ||= {}
-    window.ad.devices ||=  tags
+    AdModel.setDevices(newTags);
   };
   const showInput = () => {
     setInputVisible(true);
@@ -41,8 +41,7 @@ const Devices = () => {
   const handleInputConfirm = () => {
     if (inputValue && !tags.includes(inputValue)) {
       setTags([...tags, inputValue]);
-      window.ad ||= {}
-      window.ad.devices ||=  tags
+      AdModel.setDevices([...tags, inputValue]);
     }
     setInputVisible(false);
     setInputValue('');
@@ -54,6 +53,7 @@ const Devices = () => {
     const newTags = [...tags];
     newTags[editInputIndex] = editInputValue;
     setTags(newTags);
+    AdModel.setDevices(newTags);
     setEditInputIndex(-1);
     setEditInputValue('');
   };
