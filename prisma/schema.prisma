@@ -19,11 +19,11 @@ model Device {
 model Page {
   id        Int             @id @default(autoincrement())
   name      String
-  createdAt DateTime        @default(now())
-  updatedAt DateTime        @updatedAt
+  adUnit    String?
   Targeting PageTargeting[]
   AdSlot    AdSlot[]
-  adUnit    String
+  createdAt DateTime?        @default(now())
+  updatedAt DateTime?        @updatedAt
 }
 
 model PageTargeting {

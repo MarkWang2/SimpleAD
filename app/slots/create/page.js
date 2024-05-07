@@ -4,15 +4,9 @@ const CreateSlot = async () => {
   const slots = await prisma.adSlot.findMany()
 
   const create = async (name) => {
-    const result = await prisma.user.create({
+    const result = await prisma.AdSlot.create({
       data: {
         name: name,
-        posts: {
-          create: [
-            { title: 'How to make an omelette' },
-            { title: 'How to eat an omelette' },
-          ],
-        },
       },
       include: {
         posts: true, // Include all posts in the returned object
