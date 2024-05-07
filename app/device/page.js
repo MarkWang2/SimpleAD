@@ -1,10 +1,17 @@
 'use client'
 import React from 'react'
 import { CloseOutlined } from '@ant-design/icons'
-import { Button, Card, Form, Input, Space, Typography } from 'antd'
+import { Button, Form, Input, Space, Typography } from 'antd'
+import { createDevice } from '@/lib/actions'
 
 const App = () => {
   const [form] = Form.useForm()
+
+  const onFinish = async (values) => {
+     for (const device of values.devices) {
+      await createDevice(device)
+    }
+  }
   return (
     <Form
       labelCol={{
@@ -19,23 +26,24 @@ const App = () => {
         maxWidth: 600,
       }}
       autoComplete="off"
+      onFinish={onFinish}
       initialValues={{
         devices: [
-              {
-                'name': 'mark',
-                'viewPort': 'q',
-              },
-              {
-                'name': 'w',
-                'viewPort': 'w',
-              },
-              null,
-            ],
-          }
+          {
+            'name': 'mark',
+            'viewPort': 'q',
+          },
+          {
+            'name': 'w',
+            'viewPort': 'w',
+          },
+          null,
+        ],
+      }
       }
     >
       <Form.Item label="List">
-        <Form.List name='devices'>
+        <Form.List name="devices">
           {(subFields, subOpt) => (
             <div
               style={{
@@ -66,6 +74,21 @@ const App = () => {
             </div>
           )}
         </Form.List>
+      </Form.Item>
+
+      <Form.Item
+        wrapperCol={{
+          offset: 8,
+          span: 16,
+        }}
+      >
+        <Button type="primary" htmlType="submit">
+          Save
+        </Button>
+
+        <Button type="default" htmlType="submit">
+          Discard
+        </Button>
       </Form.Item>
 
       <Form.Item noStyle shouldUpdate>
