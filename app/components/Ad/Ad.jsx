@@ -66,7 +66,6 @@ const Ad = (props) => {
       googletag.cmd = googletag.cmd || []
 
       googletag.cmd.push(() => {
-        debugger
         const slot = isOOP ? defineOOP() : defineSlot()
         googletag.pubads().disableInitialLoad()
         googletag.pubads().enableSingleRequest()
