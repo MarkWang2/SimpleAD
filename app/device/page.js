@@ -20,88 +20,53 @@ const App = () => {
       }}
       autoComplete="off"
       initialValues={{
-        items: [
-          {
-            'list': [
+        devices: [
               {
-                'first': 'mark',
-                'second': 'q',
+                'name': 'mark',
+                'viewPort': 'q',
               },
               {
-                'first': 'w',
-                'second': 'w',
+                'name': 'w',
+                'viewPort': 'w',
               },
               null,
             ],
-          },
-        ],
-      }}
+          }
+      }
     >
-      <Form.List name="items">
-        {(fields, { add, remove }) => (
-          <div
-            style={{
-              display: 'flex',
-              rowGap: 16,
-              flexDirection: 'column',
-            }}
-          >
-            {fields.map((field) => (
-              <Card
-                size="small"
-                title={`Item ${field.name + 1}`}
-                key={field.key}
-                extra={
+      <Form.Item label="List">
+        <Form.List name='devices'>
+          {(subFields, subOpt) => (
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                rowGap: 16,
+              }}
+            >
+              {subFields.map((subField) => (
+                <Space key={subField.key}>
+                  <Form.Item noStyle name={[subField.name, 'name']}>
+                    <Input placeholder="Device Name"/>
+                  </Form.Item>
+                  <Form.Item noStyle name={[subField.name, 'viewPort']}>
+                    <Input placeholder="Min. ViewPort"/>
+                  </Form.Item>
                   <CloseOutlined
                     onClick={() => {
-                      remove(field.name)
+                      subOpt.remove(subField.name)
                     }}
                   />
-                }
-              >
-                {/* Nest Form.List */}
-                <Form.Item label="List">
-                  <Form.List name={[field.name, 'list']}>
-                    {(subFields, subOpt) => (
-                      <div
-                        style={{
-                          display: 'flex',
-                          flexDirection: 'column',
-                          rowGap: 16,
-                        }}
-                      >
-                        {subFields.map((subField) => (
-                          <Space key={subField.key}>
-                            <Form.Item noStyle name={[subField.name, 'name']}>
-                              <Input placeholder="Device Name"/>
-                            </Form.Item>
-                            <Form.Item noStyle name={[subField.name, 'viewPort']}>
-                              <Input placeholder="Min. ViewPort"/>
-                            </Form.Item>
-                            <CloseOutlined
-                              onClick={() => {
-                                subOpt.remove(subField.name)
-                              }}
-                            />
-                          </Space>
-                        ))}
-                        <Button type="dashed" onClick={() => subOpt.add()}
-                                block>
-                          + Add Sub Item
-                        </Button>
-                      </div>
-                    )}
-                  </Form.List>
-                </Form.Item>
-              </Card>
-            ))}
-
-            <Button type="dashed" onClick={() => add()} block>
-              + Add Item
-            </Button>
-          </div>
-        )}
-      </Form.List>
+                </Space>
+              ))}
+              <Button type="dashed" onClick={() => subOpt.add()}
+                      block>
+                + Add Sub Item
+              </Button>
+            </div>
+          )}
+        </Form.List>
+      </Form.Item>
 
       <Form.Item noStyle shouldUpdate>
         {() => (
