@@ -1,15 +1,24 @@
-'use client'
-import React from 'react'
+"use client"
+
+import React, { useEffect } from 'react'
+import useSWR from "swr"
 import { CloseOutlined } from '@ant-design/icons'
 import { Button, Form, Input, Space, Typography } from 'antd'
 import { createDevice } from '@/lib/actions'
 
 const App = () => {
   const [form] = Form.useForm()
+  const fetcher = (url) => fetch(url).then((r) => r.json());
+  const { data, error } = useSWR('/api/devices', fetcher)
 
   const onFinish = async (values) => {
-    await createDevice(values.devices);
+    await createDevice(values.devices)
   }
+
+  useEffect(() => {
+    form.setFieldsValue(data);
+}, [data]);
+
   return (
     <Form
       labelCol={{
@@ -25,20 +34,6 @@ const App = () => {
       }}
       autoComplete="off"
       onFinish={onFinish}
-      initialValues={{
-        devices: [
-          {
-            'name': 'mark',
-            'viewPort': 'q',
-          },
-          {
-            'name': 'w',
-            'viewPort': 'w',
-          },
-          null,
-        ],
-      }
-      }
     >
       <Form.Item label="List">
         <Form.List name="devices">
