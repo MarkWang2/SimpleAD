@@ -1,18 +1,66 @@
-import { prisma } from '@/lib/prisma';
+'use client'
 
-const CreateSlot = async () => {
-  const slots = await prisma.adSlot.findMany();
+import React, { useEffect } from 'react'
+import useSWR from 'swr'
+import { CloseOutlined } from '@ant-design/icons'
+import { Button, Form, Input, Space, Typography } from 'antd'
+import { createDevice } from '@/lib/actions'
+
+const App = () => {
+  const [form] = Form.useForm()
+  const fetcher = (url) => fetch(url).then((r) => r.json())
+  const { data } = useSWR('/api/devices', fetcher)
+
+  const onFinish = async (values) => {
+    await createDevice(values.devices)
+  }
 
   return (
-    <div className="p-4 flex flex-col gap-y-4">
-      <h2>Home</h2>
+    <Form
+      labelCol={{
+        span: 6,
+      }}
+      wrapperCol={{
+        span: 18,
+      }}
+      form={form}
+      name="dynamic_form_complex"
+      style={{
+        maxWidth: 600,
+      }}
+      autoComplete="off"
+      onFinish={onFinish}
+    >
+      {data?.devices.map((device) => {
+        return <Form.Item key={device.name} label={`${device.name} ${device.viewPort}`} >
 
-      <ul className="flex flex-col gap-y-2">
-        {slots.map((post) => (
-          <li key={post.id}>{post.name}</li>
-        ))}
-      </ul>
-    </div>
-  );
-};
-export default CreateSlot;
+
+        </Form.Item>
+      })}
+
+      <Form.Item
+        wrapperCol={{
+          offset: 8,
+          span: 16,
+        }}
+      >
+        <Button type="primary" htmlType="submit">
+          Save
+        </Button>
+
+        <Button type="default" htmlType="submit">
+          Discard
+        </Button>
+      </Form.Item>
+
+      <Form.Item noStyle shouldUpdate>
+        {() => (
+          <Typography>
+            <pre>{JSON.stringify(form.getFieldsValue(), null, 2)}</pre>
+          </Typography>
+        )}
+      </Form.Item>
+    </Form>
+  )
+}
+export default App
