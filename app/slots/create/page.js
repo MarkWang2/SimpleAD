@@ -15,9 +15,12 @@ const App = () => {
   const onFinish = async (values) => {
     await createDevice(values.devices)
   }
-  const [tags, setTags] = useState([3,4])
-  const setDeviceTags = (value) => {
-    setTags({name: value})
+  const [tags, setTags] = useState({})
+
+  const setDeviceTags = (device) => {
+    return (vtags) => {
+      setTags({ ...tags, [device]: [...vtags] })
+    }
   }
 
   return (
@@ -36,10 +39,12 @@ const App = () => {
       autoComplete="off"
       onFinish={onFinish}
     >
-      {data?.devices.map((device) => {
-        return <Form.Item key={device.name} label={`${device.name} ${device.viewPort}`} >
+      {data?.devices.map(({name, viewPort}) => {
+        return <Form.Item key={name}
+                          label={`${name} ${viewPort}`}>
 
-        <TagEditor tags={tags} setTags={setTags}></TagEditor>
+          <TagEditor tags={tags[name] || []}
+                     setTags={setDeviceTags(name)}></TagEditor>
         </Form.Item>
       })}
 
@@ -58,14 +63,8 @@ const App = () => {
         </Button>
       </Form.Item>
 
-      <Form.Item noStyle shouldUpdate>
-        {() => (
-          <Typography>
-            <pre>{JSON.stringify(form.getFieldsValue(), null, 2)}</pre>
-          </Typography>
-        )}
-      </Form.Item>
     </Form>
   )
 }
+
 export default App
