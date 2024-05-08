@@ -1,10 +1,11 @@
 'use client'
 
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import useSWR from 'swr'
 import { CloseOutlined } from '@ant-design/icons'
 import { Button, Form, Input, Space, Typography } from 'antd'
 import { createDevice } from '@/lib/actions'
+import TagEditor from '@/app/components/TagEditor'
 
 const App = () => {
   const [form] = Form.useForm()
@@ -13,6 +14,10 @@ const App = () => {
 
   const onFinish = async (values) => {
     await createDevice(values.devices)
+  }
+  const [tags, setTags] = useState([3,4])
+  const setDeviceTags = (value) => {
+    setTags({name: value})
   }
 
   return (
@@ -34,7 +39,7 @@ const App = () => {
       {data?.devices.map((device) => {
         return <Form.Item key={device.name} label={`${device.name} ${device.viewPort}`} >
 
-
+        <TagEditor tags={tags} setTags={setTags}></TagEditor>
         </Form.Item>
       })}
 
