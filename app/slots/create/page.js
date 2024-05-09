@@ -39,7 +39,10 @@ const App = () => {
       autoComplete="off"
       onFinish={onFinish}
     >
-      {data?.devices.map(({name, viewPort}) => {
+      <Form.Item label={'Ad unit'} name="uu">
+        <Input placeholder="Ad unit"/>
+      </Form.Item>
+      {data?.devices.map(({ name, viewPort }) => {
         return <Form.Item key={name}
                           label={`${name} ${viewPort}`}>
 
