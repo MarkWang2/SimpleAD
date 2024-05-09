@@ -12,14 +12,20 @@ const App = () => {
   const fetcher = (url) => fetch(url).then((r) => r.json())
   const { data } = useSWR('/api/devices', fetcher)
 
-  const onFinish = async (values) => {
-    await createDevice(values.devices)
-  }
+  const onFinish = async (values) => {}
   const [tags, setTags] = useState({})
 
-  const setDeviceTags = (device) => {
+  const setDeviceTags = (device, key) => {
     return (vtags) => {
-      setTags({ ...tags, [device]: [...vtags] })
+      form.setFieldsValue(data)
+      const fieldsValue = form.getFieldsValue()
+      const tagsState = {
+        ...tags,
+        [key]: { ...tags[key], [device]: [...vtags] },
+      }
+      fieldsValue.slots[key]['sizeMapping'] = tagsState[key]
+      form.setFieldsValue(fieldsValue)
+      setTags({ ...tags, [key]: { ...tags[key], [device]: [...vtags] } })
     }
   }
 
@@ -60,8 +66,9 @@ const App = () => {
                   return <Form.Item key={name}
                                     label={`${name} ${viewPort}`}>
 
-                    <TagEditor tags={tags[name] || []}
-                               setTags={setDeviceTags(name)}></TagEditor>
+                    <TagEditor tags={tags[subField.key]?.[name] || []}
+                               setTags={setDeviceTags(name,
+                                 subField.key)}></TagEditor>
                   </Form.Item>
                 })}
               </Space>
