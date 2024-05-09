@@ -39,18 +39,40 @@ const App = () => {
       autoComplete="off"
       onFinish={onFinish}
     >
-      <Form.Item label={'Ad unit'} name="uu">
-        <Input placeholder="Ad unit"/>
-      </Form.Item>
-      {data?.devices.map(({ name, viewPort }) => {
-        return <Form.Item key={name}
-                          label={`${name} ${viewPort}`}>
+      <Form.List name="slots">
+        {(subFields, subOpt) => (
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              rowGap: 16,
+            }}
+          >
+            {subFields.map((subField) => (
+              <Space key={subField.key}>
+                <Form.Item label={'name'} name={[subField.name, 'name']}>
+                  <Input placeholder="name"/>
+                </Form.Item>
+                <Form.Item label={'Ad unit'} name={[subField.name, 'adUnit']}>
+                  <Input placeholder="Ad unit"/>
+                </Form.Item>
+                {data?.devices.map(({ name, viewPort }) => {
+                  return <Form.Item key={name}
+                                    label={`${name} ${viewPort}`}>
 
-          <TagEditor tags={tags[name] || []}
-                     setTags={setDeviceTags(name)}></TagEditor>
-        </Form.Item>
-      })}
-
+                    <TagEditor tags={tags[name] || []}
+                               setTags={setDeviceTags(name)}></TagEditor>
+                  </Form.Item>
+                })}
+              </Space>
+            ))}
+            <Button type="dashed" onClick={() => subOpt.add()}
+                    block>
+              + Add Sub Item
+            </Button>
+          </div>
+        )}
+      </Form.List>
       <Form.Item
         wrapperCol={{
           offset: 8,
@@ -66,6 +88,13 @@ const App = () => {
         </Button>
       </Form.Item>
 
+      <Form.Item noStyle shouldUpdate>
+        {() => (
+          <Typography>
+            <pre>{JSON.stringify(form.getFieldsValue(), null, 2)}</pre>
+          </Typography>
+        )}
+      </Form.Item>
     </Form>
   )
 }
