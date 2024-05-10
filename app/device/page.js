@@ -16,6 +16,7 @@ const App = () => {
   }
 
   useEffect(() => {
+
     form.setFieldsValue(data);
 }, [data]);
 

@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import useSWR from 'swr'
 import { CloseOutlined } from '@ant-design/icons'
 import { Button, Form, Input, Space, Typography } from 'antd'
-import { createDevice } from '@/lib/actions'
+import { createSlot } from '@/lib/actions'
 import TagEditor from '@/app/components/TagEditor'
 
 const App = () => {
@@ -12,7 +12,7 @@ const App = () => {
   const fetcher = (url) => fetch(url).then((r) => r.json())
   const { data } = useSWR('/api/devices', fetcher)
 
-  const onFinish = async (values) => {}
+  const onFinish = async (values) => {createSlot()}
   const [tags, setTags] = useState({})
 
   const setDeviceTags = (device, key) => {
