@@ -12,7 +12,7 @@ const App = () => {
   const fetcher = (url) => fetch(url).then((r) => r.json())
   const { data } = useSWR('/api/devices', fetcher)
 
-  const onFinish = async (values) => {createSlot()}
+  const onFinish = async (values) => {createSlot(values)}
   const [tags, setTags] = useState({})
 
   const setDeviceTags = (device, key) => {
