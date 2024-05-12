@@ -13,7 +13,7 @@ const Ad = (props) => {
     id, position, isOOP, className, adUnit, pageType,
   } = props
   const buildSlot = () => {
-    const configSlot = getSlotConfigById(id, pageType)
+    const configSlot = getSlotConfigById(id)
     return configSlot || {}
   }
 
@@ -56,11 +56,11 @@ const Ad = (props) => {
 
   const defineSlot = () => {
     const defaultRequestSize = '330x250'
-    const responsiveAdSlot = googletag.defineSlot(adUnit, defaultRequestSize, id).
+    const responsiveAdSlot = googletag.defineSlot(adUnit || adSlot.adUnit, defaultRequestSize, id).
       addService(googletag.pubads()).
       setTargeting('position', position).
       setCollapseEmptyDiv(true)
-    responsiveAdSlot.defineSizeMapping(getSizeMapping(adSlot))
+    responsiveAdSlot.defineSizeMapping(getSizeMapping())
 
     return responsiveAdSlot
   }
