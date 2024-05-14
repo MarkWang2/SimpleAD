@@ -6,20 +6,35 @@ import { CloseOutlined } from '@ant-design/icons'
 import { Button, Form, Input, Space, Typography } from 'antd'
 import { createSlot } from '@/lib/actions'
 import TagEditor from '@/app/components/TagEditor'
+import JsonView from 'react18-json-view'
+import 'react18-json-view/src/style.css'
+
+const { Paragraph, Text } = Typography
 
 const App = () => {
   const [form] = Form.useForm()
   const fetcher = (url) => fetch(url).then((r) => r.json())
-  const { data } = useSWR('/api/devices', fetcher)
+  const { data = { devices: [] } } = useSWR('/api/devices', fetcher)
 
   const onFinish = async (values) => {
     if (typeof (values) !== 'undefined') await createSlot(values)
   }
   const [tags, setTags] = useState({})
+  const [slotsConfig, setSlotsConfig] = useState(form.getFieldsValue())
+  useEffect(() => {
+    const object = {}
+    data.devices.forEach(
+      ({ name, viewPort }) => (object[name] = viewPort.split('x').
+        map((str) => Number(str))))
+
+    const slots = form.getFieldsValue()
+    setSlotsConfig({...slots, devices: object})
+  }, [data, form.getFieldsValue()])
 
   const setDeviceTags = (device, key) => {
     return (vtags) => {
-      form.setFieldsValue(data)
+
+      // form.setFieldsValue(data)
       const fieldsValue = form.getFieldsValue()
       const tagsState = {
         ...tags,
@@ -103,6 +118,7 @@ const App = () => {
             <pre>{JSON.stringify(form.getFieldsValue(), null, 2)}</pre>
           </Typography>
         )}
+         <JsonView src={slotsConfig} />
       </Form.Item>
     </Form>
   )
