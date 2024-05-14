@@ -28,7 +28,7 @@ const App = () => {
         map((str) => Number(str))))
 
     const slots = form.getFieldsValue()
-    setSlotsConfig({...slots, devices: object})
+    setSlotsConfig({ ...slots, devices: object })
   }, [data, form.getFieldsValue()])
 
   const setDeviceTags = (device, key) => {
@@ -118,7 +118,13 @@ const App = () => {
             <pre>{JSON.stringify(form.getFieldsValue(), null, 2)}</pre>
           </Typography>
         )}
-         <JsonView src={slotsConfig} />
+        <JsonView src={slotsConfig} customizeCopy={(node) => {
+          if (Object.keys(node).includes('slots', 'devices')) {
+            return navigator.clipboard.writeText(
+              `const slotsConfig=${JSON.stringify(node, null, 2)}`)
+          }
+          return  navigator.clipboard.writeText(JSON.stringify(node, null, 2))
+        }}/>
       </Form.Item>
     </Form>
   )
