@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from 'react'
 import useSWR from 'swr'
-import { CloseOutlined } from '@ant-design/icons'
 import { Button, Form, Input, Space, Typography } from 'antd'
 import { createSlot } from '@/lib/actions'
 import TagEditor from '@/app/components/TagEditor'
@@ -14,28 +13,23 @@ const { Paragraph, Text } = Typography
 const App = () => {
   const [form] = Form.useForm()
   const fetcher = (url) => fetch(url).then((r) => r.json())
-  const { data = { devices: [] } } = useSWR('/api/devices', fetcher)
-
+  const { data = { devices: [] }, isLoading } = useSWR('/api/devices', fetcher)
+  const fieldsValue = form.getFieldsValue()
   const onFinish = async (values) => {
     if (typeof (values) !== 'undefined') await createSlot(values)
   }
   const [tags, setTags] = useState({})
-  const [slotsConfig, setSlotsConfig] = useState(form.getFieldsValue())
+  const [slotsConfig, setSlotsConfig] = useState(fieldsValue)
   useEffect(() => {
     const object = {}
-    data.devices.forEach(
+    data?.devices?.forEach(
       ({ name, viewPort }) => (object[name] = viewPort.split('x').
         map((str) => Number(str))))
-
-    const slots = form.getFieldsValue()
-    setSlotsConfig({ ...slots, devices: object })
-  }, [data, form.getFieldsValue()])
+    setSlotsConfig({ ...fieldsValue, devices: object })
+  }, [isLoading, fieldsValue])
 
   const setDeviceTags = (device, key) => {
     return (vtags) => {
-
-      // form.setFieldsValue(data)
-      const fieldsValue = form.getFieldsValue()
       const tagsState = {
         ...tags,
         [key]: { ...tags[key], [device]: [...vtags] },
@@ -112,18 +106,13 @@ const App = () => {
         </Button>
       </Form.Item>
 
-      <Form.Item noStyle shouldUpdate>
-        {() => (
-          <Typography>
-            <pre>{JSON.stringify(form.getFieldsValue(), null, 2)}</pre>
-          </Typography>
-        )}
+      <Form.Item shouldUpdate>
         <JsonView src={slotsConfig} customizeCopy={(node) => {
           if (Object.keys(node).includes('slots', 'devices')) {
             return navigator.clipboard.writeText(
               `const slotsConfig=${JSON.stringify(node, null, 2)}`)
           }
-          return  navigator.clipboard.writeText(JSON.stringify(node, null, 2))
+          return navigator.clipboard.writeText(JSON.stringify(node, null, 2))
         }}/>
       </Form.Item>
     </Form>
