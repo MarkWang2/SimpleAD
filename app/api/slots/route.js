@@ -4,15 +4,26 @@ import { prisma } from '@/lib/prisma'
 export const dynamic = 'force-dynamic'
 
 export async function GET () {
-  const notes = await prisma.Slots.findMany({
+  const slots = await prisma.AdSlot.findMany({
     select: {
       name: true,
-      viewPort: true,
+      adUnit: true,
+      SlotSizeMapping: {
+        select: {
+          size: true,
+          device: {
+            select: {
+              name: true,
+              viewPort: true,
+            },
+          },
+        }
+      },
     },
   })
   return NextResponse.json(
     {
-      devices: notes,
+      devices: slots,
     },
     {
       status: 200,
