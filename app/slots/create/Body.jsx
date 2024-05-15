@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, Form, Input, Space, Typography } from 'antd'
 import { createSlot } from '@/lib/actions'
 import TagEditor from '@/app/components/TagEditor'
@@ -9,7 +9,6 @@ import 'react18-json-view/src/style.css'
 
 const Body = ({ deviceData, initValues }) => {
   const [form] = Form.useForm()
-  const fieldsValue = form.getFieldsValue()
   const slotsConfig = Form.useWatch([], form)
   const onFinish = async (values) => {
     if (typeof (values) !== 'undefined') await createSlot(values)
@@ -22,11 +21,21 @@ const Body = ({ deviceData, initValues }) => {
         ...tags,
         [key]: { ...tags[key], [device]: [...vtags] },
       }
+      const fieldsValue = form.getFieldsValue()
       fieldsValue.slots[key]['sizeMapping'] = tagsState[key]
       form.setFieldsValue(fieldsValue)
-      setTags({ ...tags, [key]: { ...tags[key], [device]: [...vtags] } })
+      setTags((tags)=> ({ ...tags, [key]: { ...tags[key], [device]: [...vtags] } }))
     }
   }
+  useEffect(() => {
+    initValues.slots.forEach((item, index) => {
+      deviceData.devices.forEach(({ name }) => {
+        // debugger
+        setDeviceTags(name, index)(item['sizeMapping'][name])
+      })
+    })
+
+  }, [])
 
   return (
     <>
