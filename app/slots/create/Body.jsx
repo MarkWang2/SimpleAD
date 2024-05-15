@@ -7,7 +7,7 @@ import TagEditor from '@/app/components/TagEditor'
 import JsonView from 'react18-json-view'
 import 'react18-json-view/src/style.css'
 
-const Body = ({ data }) => {
+const Body = ({ deviceData, initValues }) => {
   const [form] = Form.useForm()
   const fieldsValue = form.getFieldsValue()
   const slotsConfig = Form.useWatch([], form)
@@ -43,6 +43,7 @@ const Body = ({ data }) => {
           maxWidth: 600,
         }}
         autoComplete="off"
+        initialValues={initValues}
         onFinish={onFinish}
       >
         <Form.List name="slots">
@@ -62,7 +63,7 @@ const Body = ({ data }) => {
                   <Form.Item label={'Ad unit'} name={[subField.name, 'adUnit']}>
                     <Input placeholder="Ad unit"/>
                   </Form.Item>
-                  {data?.devices.map(({ name, viewPort }) => {
+                  {deviceData?.devices.map(({ name, viewPort }) => {
                     return <Form.Item key={name}
                                       label={`${name} ${viewPort}`}>
 

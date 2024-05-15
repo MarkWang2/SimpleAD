@@ -23,7 +23,7 @@ export async function GET () {
   })
   return NextResponse.json(
     {
-      devices: slots,
+      slots,
     },
     {
       status: 200,

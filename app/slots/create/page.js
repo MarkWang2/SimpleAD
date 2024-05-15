@@ -1,7 +1,7 @@
-import React  from 'react'
+import React from 'react'
 import Body from './Body'
 
-async function getData() {
+async function getDeviceData () {
   const res = await fetch('http://localhost:3001/api/devices')
   if (!res.ok) {
     throw new Error('Failed to fetch data')
@@ -10,7 +10,7 @@ async function getData() {
   return res.json()
 }
 
-async function getData2() {
+async function getSlotData () {
   const res = await fetch('http://localhost:3001/api/slots')
   if (!res.ok) {
     throw new Error('Failed to fetch data')
@@ -20,10 +20,24 @@ async function getData2() {
 }
 
 const App = async () => {
-  const data = await getData()
-   const data2 = await getData2()
+  const deviceData = await getDeviceData()
+  const slotData = await getSlotData()
+
+  const initValues = () => {
+    const fieldsData = { slots: [] }
+    slotData.slots.forEach(({ name, adUnit, SlotSizeMapping }) => {
+      let aDSlot = { name, adUnit, sizeMapping: {} }
+      deviceData.devices.forEach(({ name }) => {
+        aDSlot.sizeMapping[name] = SlotSizeMapping.filter(
+          (item) => item.device.name === name).map(({ size }) => size)
+      })
+      fieldsData['slots'].push(aDSlot)
+    })
+    return fieldsData
+  }
+
   return (
-     <main><Body data={data} /></main>
+    <main><Body {...{ deviceData, initValues: initValues() }} /></main>
   )
 }
 export default App

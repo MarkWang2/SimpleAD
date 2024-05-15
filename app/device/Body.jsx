@@ -11,11 +11,6 @@ const Body = ({data}) => {
     await createDevice(values.devices)
   }
 
-  useEffect(() => {
-
-    form.setFieldsValue(data);
-}, [data]);
-
   return (
     <Form
       labelCol={{
@@ -29,6 +24,7 @@ const Body = ({data}) => {
       style={{
         maxWidth: 600,
       }}
+      initialValues={data}
       autoComplete="off"
       onFinish={onFinish}
     >
