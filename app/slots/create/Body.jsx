@@ -76,14 +76,31 @@ const Body = ({ deviceData, initValues }) => {
                       <div>
                         {mappingFields.map((mappingField) => (
                           <div key={mappingField.key}>
-                            <Form.Item label={'Ad unit'}
+                            <Form.Item label={'device'}
                                        name={[mappingField.name, 'device']}>
                               <Input placeholder="s'm"/>
                             </Form.Item>
-                            <Form.Item label={'Ad unit'}
-                                       name={[mappingField.name, 'sizes']}>
-                              <Input placeholder="md"/>
-                            </Form.Item>
+                            <Form.List name={[mappingField.name, 'sizes']}>
+                              {(sizesField, subOpt) => (
+                                <div>
+                                  {sizesField.map((sizeField) => (
+                                    <div key={sizeField.key}>
+                                      <Form.Item label={'device'}
+                                                 name={[
+                                                   sizeField.name,
+                                                   'size']}>
+                                        <Input placeholder="s'm"/>
+                                      </Form.Item>
+                                    </div>
+                                  ))}
+                                  <Button type="dashed"
+                                          onClick={() => subOpt.add()}
+                                          block>
+                                    + Add Ad Size
+                                  </Button>
+                                </div>
+                              )}
+                            </Form.List>
                           </div>
                         ))}
                       </div>

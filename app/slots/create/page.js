@@ -26,10 +26,12 @@ const App = async () => {
   const initValues = () => {
     const fieldsData = { slots: [] }
     slotData.slots.forEach(({ name, adUnit, SlotSizeMapping }) => {
-      let aDSlot = { name, adUnit, sizeMapping: {} }
+      let aDSlot = { name, adUnit, sizeMapping: [] }
       deviceData.devices.forEach(({ name }) => {
-        aDSlot.sizeMapping[name] = SlotSizeMapping.filter(
-          (item) => item.device.name === name).map(({ size }) => size)
+        aDSlot.sizeMapping.push({
+          [name]: SlotSizeMapping.filter(
+            (item) => item.device.name === name).map(({ size }) => size),
+        })
       })
       fieldsData['slots'].push(aDSlot)
     })
