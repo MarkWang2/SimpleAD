@@ -3,16 +3,32 @@
 import React from 'react'
 import { Button, Form, Input, Space } from 'antd'
 import { createSlot } from '@/lib/actions'
-import TagEditor from '@/app/components/TagEditor'
 import JsonView from 'react18-json-view'
 import 'react18-json-view/src/style.css'
-import { CloseOutlined } from '@ant-design/icons'
 
 const Body = ({ deviceData, initValues }) => {
   const [form] = Form.useForm()
   const slotsConfig = Form.useWatch([], form)
   const onFinish = async (values) => {
     if (typeof (values) !== 'undefined') await createSlot(values)
+  }
+
+  const adSlotDefaultValue = () => {
+    const sizeMapping = []
+    deviceData.devices.forEach(({ name }) => {
+      sizeMapping.push({
+        device: name,
+        sizes: [
+          {
+            size: '',
+          },
+        ],
+      })
+    })
+    return {
+      'name': '',
+      'adUnit': '', sizeMapping
+    }
   }
 
   return (
@@ -47,7 +63,7 @@ const Body = ({ deviceData, initValues }) => {
                     <Input placeholder="Ad unit"/>
                   </Form.Item>
                   <Form.List name={[slotField.name, 'sizeMapping']}>
-                    {(mappingFields, subOpt) => (
+                    {(mappingFields, mappingOpt) => (
                       <div>
                         {mappingFields.map((mappingField) => (
                           <div key={mappingField.key}>
@@ -62,7 +78,7 @@ const Body = ({ deviceData, initValues }) => {
                               mappingField.name,
                               'device'])}</div>
                             <Form.List name={[mappingField.name, 'sizes']}>
-                              {(sizesField, subOpt) => (
+                              {(sizesField, sizeSubOpt) => (
                                 <div>
                                   {sizesField.map((sizeField) => (
                                     <div key={sizeField.key}>
@@ -75,7 +91,7 @@ const Body = ({ deviceData, initValues }) => {
                                     </div>
                                   ))}
                                   <Button type="dashed"
-                                          onClick={() => subOpt.add()}
+                                          onClick={() => sizeSubOpt.add()}
                                           block>
                                     + Add Ad Size
                                   </Button>
@@ -89,9 +105,8 @@ const Body = ({ deviceData, initValues }) => {
                   </Form.List>
                 </Space>
               ))}
-              <Button type="dashed" onClick={() => subOpt.add()}
-                      block>
-                + Add Sub Item
+              <Button type="dashed" onClick={() => subOpt.add(adSlotDefaultValue())} block>
+                + Add Ad Slot
               </Button>
             </div>
           )}
