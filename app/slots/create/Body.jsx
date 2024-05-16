@@ -1,7 +1,7 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
-import { Button, Form, Input, Space, Typography } from 'antd'
+import React from 'react'
+import { Button, Form, Input, Space } from 'antd'
 import { createSlot } from '@/lib/actions'
 import TagEditor from '@/app/components/TagEditor'
 import JsonView from 'react18-json-view'
@@ -51,19 +51,25 @@ const Body = ({ deviceData, initValues }) => {
                       <div>
                         {mappingFields.map((mappingField) => (
                           <div key={mappingField.key}>
-                            <Form.Item label={'device'}
+                            <Form.Item noStyle
                                        name={[mappingField.name, 'device']}>
-                              <Input placeholder="s'm"/>
+                              <Input placeholder="s'm" type="hidden"/>
                             </Form.Item>
+                            <div> {form.getFieldValue([
+                              'slots',
+                              slotField.name,
+                              'sizeMapping',
+                              mappingField.name,
+                              'device'])}</div>
                             <Form.List name={[mappingField.name, 'sizes']}>
                               {(sizesField, subOpt) => (
                                 <div>
                                   {sizesField.map((sizeField) => (
                                     <div key={sizeField.key}>
-                                      <Form.Item label={'device'}
-                                                 name={[
-                                                   sizeField.name,
-                                                   'size']}>
+                                      <Form.Item
+                                        name={[
+                                          sizeField.name,
+                                          'size']}>
                                         <Input placeholder="s'm"/>
                                       </Form.Item>
                                     </div>

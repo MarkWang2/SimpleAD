@@ -1,11 +1,11 @@
-"use client"
+'use client'
 
-import React, { useEffect } from 'react'
+import React from 'react'
 import { CloseOutlined } from '@ant-design/icons'
 import { Button, Form, Input, Space, Typography } from 'antd'
 import { createDevice } from '@/lib/actions'
 
-const Body = ({data}) => {
+const Body = ({ data }) => {
   const [form] = Form.useForm()
   const onFinish = async (values) => {
     await createDevice(values.devices)
