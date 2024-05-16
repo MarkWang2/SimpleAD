@@ -6,6 +6,7 @@ import { createSlot } from '@/lib/actions'
 import TagEditor from '@/app/components/TagEditor'
 import JsonView from 'react18-json-view'
 import 'react18-json-view/src/style.css'
+import { CloseOutlined } from '@ant-design/icons'
 
 const Body = ({ deviceData, initValues }) => {
   const [form] = Form.useForm()
@@ -13,29 +14,31 @@ const Body = ({ deviceData, initValues }) => {
   const onFinish = async (values) => {
     if (typeof (values) !== 'undefined') await createSlot(values)
   }
-  const [tags, setTags] = useState({})
 
-  const setDeviceTags = (device, key) => {
-    return (vtags) => {
-      const tagsState = {
-        ...tags,
-        [key]: { ...tags[key], [device]: [...vtags] },
-      }
-      const fieldsValue = form.getFieldsValue()
-      fieldsValue.slots[key]['sizeMapping'] = tagsState[key]
-      form.setFieldsValue(fieldsValue)
-      setTags((tags)=> ({ ...tags, [key]: { ...tags[key], [device]: [...vtags] } }))
-    }
+  const innit = {
+    'slots': [
+      {
+        'name': 'mark',
+        'adUnit': 'dfs',
+        'sizeMapping': [
+          {
+            device: 'sm',
+            sizes: [
+              { size: '300x250' },
+              { size: '320x600' },
+            ],
+          },
+          {
+            device: 'md',
+            sizes: [
+              { size: '600x250' },
+              { size: '620x600' },
+            ],
+          },
+        ],
+      },
+    ],
   }
-  useEffect(() => {
-    initValues.slots.forEach((item, index) => {
-      deviceData.devices.forEach(({ name }) => {
-        // debugger
-        setDeviceTags(name, index)(item['sizeMapping'][name])
-      })
-    })
-
-  }, [])
 
   return (
     <>
@@ -52,35 +55,40 @@ const Body = ({ deviceData, initValues }) => {
           maxWidth: 600,
         }}
         autoComplete="off"
-        initialValues={initValues}
+        initialValues={innit}
         onFinish={onFinish}
       >
+
         <Form.List name="slots">
-          {(subFields, subOpt) => (
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                rowGap: 16,
-              }}
-            >
-              {subFields.map((subField) => (
-                <Space key={subField.key}>
-                  <Form.Item label={'name'} name={[subField.name, 'name']}>
+          {(slotsFields, subOpt) => (
+            <div>
+              {slotsFields.map((slotField) => (
+                <Space key={slotField.key}>
+                  <Form.Item label={'name'} name={[slotField.name, 'name']}>
                     <Input placeholder="name"/>
                   </Form.Item>
-                  <Form.Item label={'Ad unit'} name={[subField.name, 'adUnit']}>
+                  <Form.Item label={'Ad unit'}
+                             name={[slotField.name, 'adUnit']}>
                     <Input placeholder="Ad unit"/>
                   </Form.Item>
-                  {deviceData?.devices.map(({ name, viewPort }) => {
-                    return <Form.Item key={name}
-                                      label={`${name} ${viewPort}`}>
-
-                      <TagEditor tags={tags[subField.key]?.[name] || []}
-                                 setTags={setDeviceTags(name,
-                                   subField.key)}></TagEditor>
-                    </Form.Item>
-                  })}
+                  <Form.List name={[slotField.name, 'sizeMapping']}>
+                    {(mappingFields, subOpt) => (
+                      <div>
+                        {mappingFields.map((mappingField) => (
+                          <div key={mappingField.key}>
+                            <Form.Item label={'Ad unit'}
+                                       name={[mappingField.name, 'device']}>
+                              <Input placeholder="s'm"/>
+                            </Form.Item>
+                            <Form.Item label={'Ad unit'}
+                                       name={[mappingField.name, 'sizes']}>
+                              <Input placeholder="md"/>
+                            </Form.Item>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </Form.List>
                 </Space>
               ))}
               <Button type="dashed" onClick={() => subOpt.add()}
