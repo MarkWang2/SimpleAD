@@ -29,8 +29,9 @@ const App = async () => {
       let aDSlot = { name, adUnit, sizeMapping: [] }
       deviceData.devices.forEach(({ name }) => {
         aDSlot.sizeMapping.push({
-          [name]: SlotSizeMapping.filter(
-            (item) => item.device.name === name).map(({ size }) => size),
+          device: name,
+          sizes: SlotSizeMapping.filter(
+            (item) => item.device.name === name).map(({ size }) => ({ size })),
         })
       })
       fieldsData['slots'].push(aDSlot)

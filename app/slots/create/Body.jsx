@@ -15,31 +15,6 @@ const Body = ({ deviceData, initValues }) => {
     if (typeof (values) !== 'undefined') await createSlot(values)
   }
 
-  const innit = {
-    'slots': [
-      {
-        'name': 'mark',
-        'adUnit': 'dfs',
-        'sizeMapping': [
-          {
-            device: 'sm',
-            sizes: [
-              { size: '300x250' },
-              { size: '320x600' },
-            ],
-          },
-          {
-            device: 'md',
-            sizes: [
-              { size: '600x250' },
-              { size: '620x600' },
-            ],
-          },
-        ],
-      },
-    ],
-  }
-
   return (
     <>
       <Form
@@ -55,7 +30,7 @@ const Body = ({ deviceData, initValues }) => {
           maxWidth: 600,
         }}
         autoComplete="off"
-        initialValues={innit}
+        initialValues={initValues}
         onFinish={onFinish}
       >
 
