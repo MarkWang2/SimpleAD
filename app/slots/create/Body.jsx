@@ -2,6 +2,7 @@
 
 import React from 'react'
 import { Button, Form, Input, Space } from 'antd'
+import { MinusCircleOutlined } from '@ant-design/icons'
 import { createSlot } from '@/lib/actions'
 import JsonView from 'react18-json-view'
 import 'react18-json-view/src/style.css'
@@ -13,7 +14,7 @@ const Body = ({ deviceData, initValues }) => {
     if (typeof (values) !== 'undefined') await createSlot(values)
   }
 
-  const adSlotDefaultValue = () => {
+  const adSlotTemplate = () => {
     const sizeMapping = []
     deviceData.devices.forEach(({ name }) => {
       sizeMapping.push({
@@ -27,7 +28,7 @@ const Body = ({ deviceData, initValues }) => {
     })
     return {
       'name': '',
-      'adUnit': '', sizeMapping
+      'adUnit': '', sizeMapping,
     }
   }
 
@@ -49,7 +50,6 @@ const Body = ({ deviceData, initValues }) => {
         initialValues={initValues}
         onFinish={onFinish}
       >
-
         <Form.List name="slots">
           {(slotsFields, subOpt) => (
             <div>
@@ -86,8 +86,15 @@ const Body = ({ deviceData, initValues }) => {
                                         name={[
                                           sizeField.name,
                                           'size']}>
-                                        <Input placeholder="s'm"/>
+                                        <Input placeholder="adSize"/>
                                       </Form.Item>
+                                      {mappingFields.length > 1 ? (
+                                        <MinusCircleOutlined
+                                          className="dynamic-delete-button"
+                                          onClick={() => sizeSubOpt.remove(
+                                            mappingField.name)}
+                                        />
+                                      ) : null}
                                     </div>
                                   ))}
                                   <Button type="dashed"
@@ -103,9 +110,17 @@ const Body = ({ deviceData, initValues }) => {
                       </div>
                     )}
                   </Form.List>
+
+                  <Button type="dashed"
+                          onClick={() => subOpt.remove(slotField.name)}
+                          block>
+                    - Delete Ad Slot
+                  </Button>
                 </Space>
               ))}
-              <Button type="dashed" onClick={() => subOpt.add(adSlotDefaultValue())} block>
+              <Button type="dashed"
+                      onClick={() => subOpt.add(adSlotTemplate())}
+                      block>
                 + Add Ad Slot
               </Button>
             </div>
