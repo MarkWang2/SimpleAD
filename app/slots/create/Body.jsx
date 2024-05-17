@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, Form, Input, Space } from 'antd'
 import { MinusCircleOutlined } from '@ant-design/icons'
 import { createSlot } from '@/lib/actions'
@@ -8,8 +8,22 @@ import JsonView from 'react18-json-view'
 import 'react18-json-view/src/style.css'
 
 const Body = ({ deviceData, initValues }) => {
+  const [slotsConfig, setSlotsConfig] = useState({})
   const [form] = Form.useForm()
-  const slotsConfig = Form.useWatch([], form)
+  const slotsConfigFields = Form.useWatch([], form)
+  useEffect(() => {
+    if (slotsConfigFields) {
+      const slotsConfigFormat = slotsConfigFields.slots.map(({ name, adUnit, sizeMapping }) => {
+        return {
+          name,
+          adUnit,
+          sizeMapping: sizeMapping.map(({ device, sizes }) => ({ [device]: sizes.map(({size})=>(size) ) })),
+        }
+      })
+      setSlotsConfig(slotsConfigFormat)
+    }
+  }, [slotsConfigFields])
+
   const onFinish = async (values) => {
     if (typeof (values) !== 'undefined') await createSlot(values)
   }
@@ -142,7 +156,7 @@ const Body = ({ deviceData, initValues }) => {
         </Form.Item>
       </Form>
       <JsonView src={slotsConfig} customizeCopy={(node) => {
-        if (Object.keys(node).includes('slots', 'devices')) {
+        if (Object.keys(node).includes('slots')) {
           return navigator.clipboard.writeText(
             `const slotsConfig=${JSON.stringify(node, null, 2)}`)
         }
