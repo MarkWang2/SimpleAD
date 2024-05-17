@@ -10,15 +10,17 @@ import 'react18-json-view/src/style.css'
 const Body = ({ deviceData, initValues }) => {
   const [form] = Form.useForm()
   const slotsConfigFields = Form.useWatch((values) => {
-    return values.slots.map(({ name, adUnit, sizeMapping }) => {
-      return {
-        name,
-        adUnit,
-        sizeMapping: sizeMapping.map(({ device, sizes }) => ({
-          [device]: sizes.map(({ size }) => (size)),
-        })),
-      }
-    })
+    return {
+      slots: values.slots.map(({ name, adUnit, sizeMapping }) => {
+        return {
+          name,
+          adUnit,
+          sizeMapping: sizeMapping.map(({ device, sizes }) => ({
+            [device]: sizes.map(({ size }) => (size)),
+          })),
+        }
+      }),
+    }
   }, form)
 
   const onFinish = async (values) => {
