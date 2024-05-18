@@ -11,20 +11,21 @@ const Body = ({ deviceData, initValues }) => {
   const [form] = Form.useForm()
   const slotsConfigFields = Form.useWatch((values) => {
     return {
-      slots: values.slots.map(({ name, adUnit, sizeMapping }) => {
+      slots: values?.slots?.map(({ name, adUnit, sizeMapping }) => {
         return {
           name,
           adUnit,
-          sizeMapping: sizeMapping.map(({ device, sizes }) => ({
-            [device]: sizes.map(({ size }) => (size)),
-          })),
+          sizeMapping: sizeMapping.reduce((values, { device, sizes }) => (
+            { ...values, [device]: sizes.map(({ size }) => (size)).filter(n => n) }
+          ), {}),
         }
       }),
     }
   }, form)
 
   const onFinish = async (values) => {
-    if (typeof (values) !== 'undefined') await createSlot(values)
+    if (typeof (slotsConfigFields) !== 'undefined') await createSlot(
+      slotsConfigFields)
   }
 
   const adSlotTemplate = () => {
@@ -116,7 +117,8 @@ const Body = ({ deviceData, initValues }) => {
                                     </Space>
                                   ))}
                                   <Button type="dashed"
-                                          onClick={() => sizeSubOpt.add()}
+                                          onClick={() => sizeSubOpt.add(
+                                            { size: null })}
                                           block>
                                     + Size
                                   </Button>
