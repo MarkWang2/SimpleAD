@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { Button, Form, Input, Space } from 'antd'
 import { MinusCircleOutlined } from '@ant-design/icons'
 import { createSlot } from '@/lib/actions'
@@ -66,7 +66,7 @@ const Body = ({ deviceData, initValues }) => {
       >
         <Form.List name="slots">
           {(slotsFields, subOpt) => (
-            <Space  direction='vertical'>
+            <Space direction="vertical">
               {slotsFields.map((slotField) => (
                 <Space key={slotField.key}>
                   <Form.Item label={'name'} name={[slotField.name, 'name']}>
@@ -76,9 +76,10 @@ const Body = ({ deviceData, initValues }) => {
                              name={[slotField.name, 'adUnit']}>
                     <Input placeholder="Ad unit"/>
                   </Form.Item>
-                  <Form.List label={'dnndnfd'}  name={[slotField.name, 'sizeMapping']}>
+                  <Form.List name={[slotField.name, 'sizeMapping']}>
                     {(mappingFields, mappingOpt) => (
-                      <Space>
+                      <Space direction="vertical">
+                        sizeMapping:
                         {mappingFields.map((mappingField) => (
                           <Space key={mappingField.key}>
                             <Form.Item noStyle
@@ -101,7 +102,9 @@ const Body = ({ deviceData, initValues }) => {
                                         name={[
                                           sizeField.name,
                                           'size']}>
-                                        <Input placeholder="adSize"/>
+                                        <Input style={{ width: '80px' }}
+                                               size="small"
+                                               placeholder="adSize"/>
                                       </Form.Item>
                                       {mappingFields.length > 1 ? (
                                         <MinusCircleOutlined
@@ -115,7 +118,7 @@ const Body = ({ deviceData, initValues }) => {
                                   <Button type="dashed"
                                           onClick={() => sizeSubOpt.add()}
                                           block>
-                                    + Add Ad Size
+                                    + Size
                                   </Button>
                                 </Space>
                               )}
@@ -129,14 +132,14 @@ const Body = ({ deviceData, initValues }) => {
                   <Button type="dashed"
                           onClick={() => subOpt.remove(slotField.name)}
                           block>
-                    - Delete Ad Slot
+                    - Ad Slot
                   </Button>
                 </Space>
               ))}
               <Button type="dashed"
                       onClick={() => subOpt.add(adSlotTemplate())}
                       block>
-                + Add Ad Slot
+                + Ad Slot
               </Button>
             </Space>
           )}
