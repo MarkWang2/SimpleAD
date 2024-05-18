@@ -49,15 +49,16 @@ const Body = ({ deviceData, initValues }) => {
     <>
       <Form
         labelCol={{
-          span: 6,
+          span: 24,
         }}
         wrapperCol={{
-          span: 18,
+          span: 24,
         }}
+        layout="vertical"
         form={form}
         name="dynamic_form_complex"
         style={{
-          maxWidth: 600,
+          maxWidth: '100%',
         }}
         autoComplete="off"
         initialValues={initValues}
@@ -65,7 +66,7 @@ const Body = ({ deviceData, initValues }) => {
       >
         <Form.List name="slots">
           {(slotsFields, subOpt) => (
-            <div>
+            <Space  direction='vertical'>
               {slotsFields.map((slotField) => (
                 <Space key={slotField.key}>
                   <Form.Item label={'name'} name={[slotField.name, 'name']}>
@@ -75,27 +76,28 @@ const Body = ({ deviceData, initValues }) => {
                              name={[slotField.name, 'adUnit']}>
                     <Input placeholder="Ad unit"/>
                   </Form.Item>
-                  <Form.List name={[slotField.name, 'sizeMapping']}>
+                  <Form.List label={'dnndnfd'}  name={[slotField.name, 'sizeMapping']}>
                     {(mappingFields, mappingOpt) => (
-                      <div>
+                      <Space>
                         {mappingFields.map((mappingField) => (
-                          <div key={mappingField.key}>
+                          <Space key={mappingField.key}>
                             <Form.Item noStyle
                                        name={[mappingField.name, 'device']}>
-                              <Input placeholder="s'm" type="hidden"/>
+                              <Input type="hidden"/>
                             </Form.Item>
-                            <div> {form.getFieldValue([
+                            <Space> {form.getFieldValue([
                               'slots',
                               slotField.name,
                               'sizeMapping',
                               mappingField.name,
-                              'device'])}</div>
+                              'device'])}</Space>
                             <Form.List name={[mappingField.name, 'sizes']}>
                               {(sizesField, sizeSubOpt) => (
-                                <div>
+                                <Space>
                                   {sizesField.map((sizeField) => (
-                                    <div key={sizeField.key}>
+                                    <Space key={sizeField.key}>
                                       <Form.Item
+                                        noStyle
                                         name={[
                                           sizeField.name,
                                           'size']}>
@@ -108,19 +110,19 @@ const Body = ({ deviceData, initValues }) => {
                                             mappingField.name)}
                                         />
                                       ) : null}
-                                    </div>
+                                    </Space>
                                   ))}
                                   <Button type="dashed"
                                           onClick={() => sizeSubOpt.add()}
                                           block>
                                     + Add Ad Size
                                   </Button>
-                                </div>
+                                </Space>
                               )}
                             </Form.List>
-                          </div>
+                          </Space>
                         ))}
-                      </div>
+                      </Space>
                     )}
                   </Form.List>
 
@@ -136,7 +138,7 @@ const Body = ({ deviceData, initValues }) => {
                       block>
                 + Add Ad Slot
               </Button>
-            </div>
+            </Space>
           )}
         </Form.List>
         <Form.Item
