@@ -23,9 +23,8 @@ const Body = ({ deviceData, initValues }) => {
     }
   }, form)
 
-  const onFinish = async (values) => {
-    if (typeof (slotsConfigFields) !== 'undefined') await createSlot(
-      slotsConfigFields)
+  const onFinish = async () => {
+    if (typeof (slotsConfigFields) !== 'undefined') await createSlot(slotsConfigFields)
   }
 
   const adSlotTemplate = () => {
@@ -156,7 +155,7 @@ const Body = ({ deviceData, initValues }) => {
             Save
           </Button>
 
-          <Button type="default" htmlType="submit">
+          <Button onClick={()=> { form.resetFields() }} type="default" htmlType="submit">
             Discard
           </Button>
         </Form.Item>
