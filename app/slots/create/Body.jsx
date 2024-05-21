@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { useState } from 'react'
 import { Button, Form, Input, Space } from 'antd'
 import { MinusCircleOutlined } from '@ant-design/icons'
 import { createSlot } from '@/lib/actions'
@@ -9,6 +9,7 @@ import 'react18-json-view/src/style.css'
 
 const Body = ({ deviceData, initValues }) => {
   const [form] = Form.useForm()
+  const [pending, setPending] = useState(false);
   const slotsConfigFields = Form.useWatch((values) => {
     return {
       slots: values?.slots?.map(({ name, adUnit, sizeMapping }) => {
@@ -24,7 +25,11 @@ const Body = ({ deviceData, initValues }) => {
   }, form)
 
   const onFinish = async () => {
-    if (typeof (slotsConfigFields) !== 'undefined') await createSlot(slotsConfigFields)
+    if (typeof (slotsConfigFields) !== 'undefined')  {
+      setPending(true)
+      await createSlot(slotsConfigFields)
+      setPending(false)
+    }
   }
 
   const adSlotTemplate = () => {
@@ -152,7 +157,7 @@ const Body = ({ deviceData, initValues }) => {
           }}
         >
           <Button type="primary" htmlType="submit">
-            Save
+            {pending ? "loading..." : "Save"}
           </Button>
 
           <Button onClick={()=> { form.resetFields() }} type="default" htmlType="submit">
