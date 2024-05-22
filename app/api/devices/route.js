@@ -4,7 +4,7 @@ import { prisma } from '@/lib/prisma'
 export const dynamic = 'force-dynamic'
 
 export async function GET () {
-  const notes = await prisma.Device.findMany({
+  const devices = await prisma.Device.findMany({
     select: {
       name: true,
       viewPort: true,
@@ -12,7 +12,7 @@ export async function GET () {
   })
   return NextResponse.json(
     {
-      devices: notes,
+      devices
     },
     {
       status: 200,

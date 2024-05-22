@@ -4,7 +4,8 @@ import { getSlotConfigById } from '../helper'
 const usePageTargeting = () => {
   const setFromServerTargeting = () => {
     const pageTargeting = document.querySelector(
-      'meta[name=\'ad-targeting\']').dataset
+      'meta[name=\'ad-targeting\']')?.dataset || {}
+    debugger
     for (const [key, value] of Object.entries(pageTargeting)) {
       googletag.pubads().setTargeting(key, value)
     }
@@ -14,14 +15,13 @@ const usePageTargeting = () => {
     const params = new URLSearchParams(document.location.search)
     for (const key of params.keys()) {
       if (['utm_campaign', 'utm_medium', 'utm_source'].includes(key)) {
-        debugger
         googletag.pubads().setTargeting(key, params.get(key))
       }
     }
   }
   const setPageLevelTargeting = () => {
     googletag.cmd.push(() => {
-      // setFromServerTargeting()
+      setFromServerTargeting()
       setUrlTargeting()
     })
   }
