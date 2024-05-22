@@ -1,9 +1,14 @@
+'use client'
+
 import Image from "next/image";
 import styles from "./page.module.css";
 import Ad from '@/app/components/Ad'
-import { Button, Space, DatePicker, version } from 'antd';
+import { Button, Space, DatePicker } from 'antd';
+import usePageTargeting from '@/app/components/Ad/hooks/usePageTargeting'
 
 export default function Home() {
+  usePageTargeting()
+
   return (
     <main className={styles.main}>
       <div style={{ padding: '0 24px' }}>
