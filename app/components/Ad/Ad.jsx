@@ -5,8 +5,6 @@ import classNames from 'classnames'
 import { getSlotConfigById } from './helper'
 
 import './ad.scss'
-import AdModel from '@/app/models/adModel'
-import { devices } from '@/app/components/Ad/devices'
 
 const Ad = (props) => {
   const {
@@ -21,32 +19,11 @@ const Ad = (props) => {
   const prebidUnits = []
 
   const getSizeMapping = () => {
-    const dataSlots = {
-      'slots': [
-        {
-          'name': 'sdf',
-          'adUnit': 'sdf',
-          'sizeMapping': {
-            'sm': [
-              '300x50',
-              '320x50',
-            ],
-            'md': [
-              '300x50',
-              '320x50',
-            ],
-            'lg': [],
-          },
-        },
-        null,
-      ],
-    }
-
-    const sizeMapping = dataSlots.slots[0].sizeMapping
+    const sizeMapping = adSlot.sizeMapping
     const adsSizeMapping = googletag.sizeMapping()
-   const devices = { sm: [0, 0], md: [767, 0], lg: [1024, 0] }
+    const devices = { sm: [0, 0], md: [767, 0], lg: [1024, 0] }
     for (const [key, value] of Object.entries(sizeMapping)) {
-      if(value.length) {
+      if (value.length) {
         adsSizeMapping.addSize(devices[key],
           value.map((i) => i.split('x').map((v) => Number(v))))
       }
@@ -56,11 +33,16 @@ const Ad = (props) => {
 
   const defineSlot = () => {
     const defaultRequestSize = '330x250'
-    const responsiveAdSlot = googletag.defineSlot(adUnit || adSlot.adUnit, defaultRequestSize, id).
+    const responsiveAdSlot = googletag.defineSlot(adUnit || adSlot.adUnit,
+      defaultRequestSize, id).
       addService(googletag.pubads()).
       setTargeting('position', position).
       setCollapseEmptyDiv(true)
     responsiveAdSlot.defineSizeMapping(getSizeMapping())
+
+    adSlot.slotTargeting.forEach(({name, value}) => {
+       responsiveAdSlot.setTargeting(name, value)
+    })
 
     return responsiveAdSlot
   }
