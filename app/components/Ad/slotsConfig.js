@@ -1,45 +1,61 @@
 const slotsConfig = {
-  'slots': [
+  "slots": [
     {
-      'name': 'lead2',
-      'adUnit': 'dfs',
-      'slotTargeting': [
+      "name": "lead2",
+      "adUnit": "lead2",
+      "slotTargeting": [
         {
-          'name': 'sdf',
-          'value': '432',
+          "name": "sdf",
+          "value": "432"
         },
         {
-          'name': 'df',
-          'value': 'dsfsdf',
-        },
+          "name": "df",
+          "value": "dsfsdf"
+        }
       ],
-      'sizeMapping': {
-        'sm': [
-          '300x250',
+      "sizeMapping": {
+        "sm": [
+          "300x250"
         ],
-        'md': [
-          '300x600',
+        "md": [
+          "320x250"
         ],
-        'lg': [],
-      },
+        "lg": [
+          "300x600"
+        ]
+      }
     },
     {
-      'name': 'cxzxc',
-      'adUnit': 'zxc',
-      'slotTargeting': [],
-      'sizeMapping': {
-        'sm': [
-          'df',
-          'sdf',
+      "name": "cxzxc",
+      "adUnit": "zxc",
+      "slotTargeting": [],
+      "sizeMapping": {
+        "sm": [
+          "df",
+          "sdf"
         ],
-        'md': [
-          'sdf',
+        "md": [
+          "sdf"
         ],
-        'lg': [
-          'sdf',
-        ],
-      },
-    },
+        "lg": [
+          "sdf"
+        ]
+      }
+    }
   ],
+  "devices": {
+    "lg": [
+      1024,
+      0
+    ],
+    "md": [
+      767,
+      0
+    ],
+    "sm": [
+      0,
+      0
+    ]
+  }
 }
 export default slotsConfig

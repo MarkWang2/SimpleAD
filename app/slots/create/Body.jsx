@@ -10,6 +10,14 @@ import 'react18-json-view/src/style.css'
 const Body = ({ deviceData, initValues }) => {
   const [form] = Form.useForm()
   const [pending, setPending] = useState(false)
+  const buildSizeMapping = (sizeMapping) => {
+    return sizeMapping.reduce((values, { device, sizes }) => (
+      {
+        ...values,
+        [device]: sizes.map(({ size }) => (size)).filter(n => n),
+      }
+    ), {})
+  }
   const slotsConfigFields = Form.useWatch((values) => {
     return {
       slots: values?.slots?.map(
@@ -18,12 +26,7 @@ const Body = ({ deviceData, initValues }) => {
             name,
             adUnit,
             slotTargeting,
-            sizeMapping: sizeMapping.reduce((values, { device, sizes }) => (
-              {
-                ...values,
-                [device]: sizes.map(({ size }) => (size)).filter(n => n),
-              }
-            ), {}),
+            sizeMapping: buildSizeMapping(sizeMapping),
           }
         }),
     }
@@ -205,10 +208,13 @@ const Body = ({ deviceData, initValues }) => {
       </Form>
       <JsonView src={slotsConfigFields} customizeCopy={(node) => {
         if (Object.keys(node).includes('slots')) {
-          const device = deviceData.devices.map(({ name, viewPort }) => ({ name, viewPort: viewPort.split('x') }))
-          const slotsConfigData = {node, device}
+          const devices = deviceData.devices.reverse().reduce(
+            (values, { name, viewPort }) => ({ [name]: viewPort.split('x').map(Number), ...values, }), {})
+          const slotsConfigData = { ...node, devices }
           return navigator.clipboard.writeText(
-            `const slotsConfig=${JSON.stringify(slotsConfigData, null, 2)}`)
+            `const slotsConfig = ${JSON.stringify(slotsConfigData, null, 2)}
+export default slotsConfig`)
+
         }
         return navigator.clipboard.writeText(
           JSON.stringify(node, null, 2))

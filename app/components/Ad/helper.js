@@ -1,5 +1,7 @@
-import slotsConfig from './slotsConfig';
+import slotsConfig from './slotsConfig'
 
 export const getSlotConfigById = (id) => {
-  return slotsConfig?.slots.find(slot => slot?.name === id) || {};
-};
+  const { slots, devices } = slotsConfig
+
+  return { devices, ...slots.find(slot => slot?.name === id) }
+}

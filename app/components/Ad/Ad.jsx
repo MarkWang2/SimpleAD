@@ -10,18 +10,14 @@ const Ad = (props) => {
   const {
     id, position, isOOP, className, adUnit, pageType,
   } = props
-  const buildSlot = () => {
-    const configSlot = getSlotConfigById(id)
-    return configSlot || {}
-  }
 
-  const adSlot = buildSlot()
+  const adSlot = getSlotConfigById(id)
   const prebidUnits = []
 
   const getSizeMapping = () => {
     const sizeMapping = adSlot.sizeMapping
     const adsSizeMapping = googletag.sizeMapping()
-    const devices = { sm: [0, 0], md: [767, 0], lg: [1024, 0] }
+    const devices = adSlot.devices
     for (const [key, value] of Object.entries(sizeMapping)) {
       adsSizeMapping.addSize(devices[key],
         value.map((i) => i.split('x').map((v) => Number(v))))
