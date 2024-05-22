@@ -83,19 +83,17 @@ const Body = ({ deviceData, initValues }) => {
       >
         <Form.List name="slots">
           {(slotsFields, subOpt) => (
-            <Space direction="vertical">
+            <Space direction="vertical" style={{ width: '100%' }}>
               {slotsFields.map((slotField) => (
                 <Collapse key={slotField.key} defaultActiveKey={['1']}>
                   <Collapse.Panel
                     header={<Form.Item
-                                       name={[slotField.name, 'name']}>
+                      style={{ width: '20%' }}
+                      name={[slotField.name, 'name']}>
                       <Input placeholder="name"/>
                     </Form.Item>}
                     key={slotField.key}>
-                    <Space key={slotField.key}>
-                      <Form.Item label={'name'} name={[slotField.name, 'name']}>
-                        <Input placeholder="name"/>
-                      </Form.Item>
+                    <Space direction="vertical" key={slotField.key}>
                       <Form.Item label={'Ad unit'}
                                  name={[slotField.name, 'adUnit']}>
                         <Input placeholder="Ad unit"/>
@@ -130,13 +128,11 @@ const Body = ({ deviceData, initValues }) => {
                                                    size="small"
                                                    placeholder="adSize"/>
                                           </Form.Item>
-                                          {mappingFields.length > 1 ? (
-                                            <MinusCircleOutlined
-                                              className="dynamic-delete-button"
-                                              onClick={() => sizeSubOpt.remove(
-                                                mappingField.name)}
-                                            />
-                                          ) : null}
+                                          <MinusCircleOutlined
+                                            className="dynamic-delete-button"
+                                            onClick={() => sizeSubOpt.remove(
+                                              sizeField.name)}
+                                          />
                                         </Space>
                                       ))}
                                       <Button type="dashed"
@@ -175,7 +171,7 @@ const Body = ({ deviceData, initValues }) => {
                                   <Input placeholder="value"/>
                                 </Form.Item>
 
-                                {targetingFields.length > 1 ? (
+                                {targetingFields.length > 0 ? (
                                   <MinusCircleOutlined
                                     className="dynamic-delete-button"
                                     onClick={() => targetingOpt.remove(
