@@ -8,6 +8,12 @@ export async function GET () {
     select: {
       name: true,
       adUnit: true,
+      SlotTargeting: {
+        select: {
+          name: true,
+          value: true,
+        }
+      },
       SlotSizeMapping: {
         select: {
           size: true,

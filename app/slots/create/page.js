@@ -25,8 +25,8 @@ const App = async () => {
 
   const initValues = () => {
     const fieldsData = { slots: [] }
-    slotData.slots.forEach(({ name, adUnit, SlotSizeMapping }) => {
-      let aDSlot = { name, adUnit, sizeMapping: [] }
+    slotData.slots.forEach(({ name, adUnit, SlotTargeting, SlotSizeMapping }) => {
+      let aDSlot = { name, adUnit, slotTargeting: SlotTargeting, sizeMapping: [] }
       deviceData.devices.forEach(({ name }) => {
         aDSlot.sizeMapping.push({
           device: name,
