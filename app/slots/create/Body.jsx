@@ -9,15 +9,19 @@ import 'react18-json-view/src/style.css'
 
 const Body = ({ deviceData, initValues }) => {
   const [form] = Form.useForm()
-  const [pending, setPending] = useState(false);
+  const [pending, setPending] = useState(false)
   const slotsConfigFields = Form.useWatch((values) => {
     return {
-      slots: values?.slots?.map(({ name, adUnit, sizeMapping }) => {
+      slots: values?.slots?.map(({ name, adUnit, slotTargeting, sizeMapping }) => {
         return {
           name,
           adUnit,
+          slotTargeting,
           sizeMapping: sizeMapping.reduce((values, { device, sizes }) => (
-            { ...values, [device]: sizes.map(({ size }) => (size)).filter(n => n) }
+            {
+              ...values,
+              [device]: sizes.map(({ size }) => (size)).filter(n => n),
+            }
           ), {}),
         }
       }),
@@ -25,7 +29,7 @@ const Body = ({ deviceData, initValues }) => {
   }, form)
 
   const onFinish = async () => {
-    if (typeof (slotsConfigFields) !== 'undefined')  {
+    if (typeof (slotsConfigFields) !== 'undefined') {
       setPending(true)
       await createSlot(slotsConfigFields)
       setPending(false)
@@ -134,12 +138,44 @@ const Body = ({ deviceData, initValues }) => {
                       </Space>
                     )}
                   </Form.List>
-
                   <Button type="dashed"
                           onClick={() => subOpt.remove(slotField.name)}
                           block>
                     - Ad Slot
                   </Button>
+                  <Form.List name={[slotField.name, 'slotTargeting']}>
+                    {(targetingFields, targetingOpt) => (
+                      <Space direction="vertical">
+                        {targetingFields.map((targetingField) => (
+                          <Space key={targetingField.key}>
+                            <Form.Item noStyle
+                                       name={[targetingField.name, 'name']}>
+                              <Input placeholder="name"/>
+                            </Form.Item>
+
+                            <Form.Item noStyle
+                                       name={[targetingField.name, 'value']}>
+                              <Input placeholder="value"/>
+                            </Form.Item>
+
+                            {targetingFields.length > 1 ? (
+                              <MinusCircleOutlined
+                                className="dynamic-delete-button"
+                                onClick={() => targetingOpt.remove(
+                                  targetingField.name)}
+                              />
+                            ) : null}
+                          </Space>
+                        ))}
+                        <Button type="dashed"
+                                onClick={() => targetingOpt.add(
+                                  { name: null, value: null })}
+                                block>
+                          + Ad targeting
+                        </Button>
+                      </Space>
+                    )}
+                  </Form.List>
                 </Space>
               ))}
               <Button type="dashed"
@@ -157,10 +193,11 @@ const Body = ({ deviceData, initValues }) => {
           }}
         >
           <Button type="primary" htmlType="submit">
-            {pending ? "loading..." : "Save"}
+            {pending ? 'loading...' : 'Save'}
           </Button>
 
-          <Button onClick={()=> { form.resetFields() }} type="default" htmlType="submit">
+          <Button onClick={() => { form.resetFields() }} type="default"
+                  htmlType="submit">
             Discard
           </Button>
         </Form.Item>

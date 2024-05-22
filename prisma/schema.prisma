@@ -38,6 +38,7 @@ model PageTargeting {
 model SlotTargeting {
   id        Int      @id @default(autoincrement())
   name      String
+  value     String
   slot      AdSlot   @relation(fields: [slotId], references: [id])
   slotId    Int
   createdAt DateTime @default(now())
