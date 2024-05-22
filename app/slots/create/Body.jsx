@@ -12,19 +12,20 @@ const Body = ({ deviceData, initValues }) => {
   const [pending, setPending] = useState(false)
   const slotsConfigFields = Form.useWatch((values) => {
     return {
-      slots: values?.slots?.map(({ name, adUnit, slotTargeting, sizeMapping }) => {
-        return {
-          name,
-          adUnit,
-          slotTargeting,
-          sizeMapping: sizeMapping.reduce((values, { device, sizes }) => (
-            {
-              ...values,
-              [device]: sizes.map(({ size }) => (size)).filter(n => n),
-            }
-          ), {}),
-        }
-      }),
+      slots: values?.slots?.map(
+        ({ name, adUnit, slotTargeting, sizeMapping }) => {
+          return {
+            name,
+            adUnit,
+            slotTargeting,
+            sizeMapping: sizeMapping.reduce((values, { device, sizes }) => (
+              {
+                ...values,
+                [device]: sizes.map(({ size }) => (size)).filter(n => n),
+              }
+            ), {}),
+          }
+        }),
     }
   }, form)
 
@@ -204,8 +205,10 @@ const Body = ({ deviceData, initValues }) => {
       </Form>
       <JsonView src={slotsConfigFields} customizeCopy={(node) => {
         if (Object.keys(node).includes('slots')) {
+          const device = deviceData.devices.map(({ name, viewPort }) => ({ name, viewPort: viewPort.split('x') }))
+          const slotsConfigData = {node, device}
           return navigator.clipboard.writeText(
-            `const slotsConfig=${JSON.stringify(node, null, 2)}`)
+            `const slotsConfig=${JSON.stringify(slotsConfigData, null, 2)}`)
         }
         return navigator.clipboard.writeText(
           JSON.stringify(node, null, 2))
