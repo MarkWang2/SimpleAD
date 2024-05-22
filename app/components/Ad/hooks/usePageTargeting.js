@@ -5,7 +5,6 @@ const usePageTargeting = () => {
   const setFromServerTargeting = () => {
     const pageTargeting = document.querySelector(
       'meta[name=\'ad-targeting\']')?.dataset || {}
-    debugger
     for (const [key, value] of Object.entries(pageTargeting)) {
       googletag.pubads().setTargeting(key, value)
     }

@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
-import { Button, Form, Input, Space } from 'antd'
+import { Button, Form, Input, Space, Collapse } from 'antd'
 import { MinusCircleOutlined } from '@ant-design/icons'
 import { createSlot } from '@/lib/actions'
 import JsonView from 'react18-json-view'
@@ -58,6 +58,10 @@ const Body = ({ deviceData, initValues }) => {
     }
   }
 
+  const onChange = (key) => {
+    console.log(key)
+  }
+
   return (
     <>
       <Form
@@ -81,106 +85,118 @@ const Body = ({ deviceData, initValues }) => {
           {(slotsFields, subOpt) => (
             <Space direction="vertical">
               {slotsFields.map((slotField) => (
-                <Space key={slotField.key}>
-                  <Form.Item label={'name'} name={[slotField.name, 'name']}>
-                    <Input placeholder="name"/>
-                  </Form.Item>
-                  <Form.Item label={'Ad unit'}
-                             name={[slotField.name, 'adUnit']}>
-                    <Input placeholder="Ad unit"/>
-                  </Form.Item>
-                  <Form.List name={[slotField.name, 'sizeMapping']}>
-                    {(mappingFields, mappingOpt) => (
-                      <Space direction="vertical">
-                        sizeMapping:
-                        {mappingFields.map((mappingField) => (
-                          <Space key={mappingField.key}>
-                            <Form.Item noStyle
-                                       name={[mappingField.name, 'device']}>
-                              <Input type="hidden"/>
-                            </Form.Item>
-                            <Space> {form.getFieldValue([
-                              'slots',
-                              slotField.name,
-                              'sizeMapping',
-                              mappingField.name,
-                              'device'])}</Space>
-                            <Form.List name={[mappingField.name, 'sizes']}>
-                              {(sizesField, sizeSubOpt) => (
-                                <Space>
-                                  {sizesField.map((sizeField) => (
-                                    <Space key={sizeField.key}>
-                                      <Form.Item
-                                        noStyle
-                                        name={[
-                                          sizeField.name,
-                                          'size']}>
-                                        <Input style={{ width: '80px' }}
-                                               size="small"
-                                               placeholder="adSize"/>
-                                      </Form.Item>
-                                      {mappingFields.length > 1 ? (
-                                        <MinusCircleOutlined
-                                          className="dynamic-delete-button"
-                                          onClick={() => sizeSubOpt.remove(
-                                            mappingField.name)}
-                                        />
-                                      ) : null}
+                <Collapse key={slotField.key} defaultActiveKey={['1']}>
+                  <Collapse.Panel
+                    header={<Form.Item
+                                       name={[slotField.name, 'name']}>
+                      <Input placeholder="name"/>
+                    </Form.Item>}
+                    key={slotField.key}>
+                    <Space key={slotField.key}>
+                      <Form.Item label={'name'} name={[slotField.name, 'name']}>
+                        <Input placeholder="name"/>
+                      </Form.Item>
+                      <Form.Item label={'Ad unit'}
+                                 name={[slotField.name, 'adUnit']}>
+                        <Input placeholder="Ad unit"/>
+                      </Form.Item>
+                      <Form.List name={[slotField.name, 'sizeMapping']}>
+                        {(mappingFields, mappingOpt) => (
+                          <Space direction="vertical">
+                            sizeMapping:
+                            {mappingFields.map((mappingField) => (
+                              <Space key={mappingField.key}>
+                                <Form.Item noStyle
+                                           name={[mappingField.name, 'device']}>
+                                  <Input type="hidden"/>
+                                </Form.Item>
+                                <Space> {form.getFieldValue([
+                                  'slots',
+                                  slotField.name,
+                                  'sizeMapping',
+                                  mappingField.name,
+                                  'device'])}</Space>
+                                <Form.List name={[mappingField.name, 'sizes']}>
+                                  {(sizesField, sizeSubOpt) => (
+                                    <Space>
+                                      {sizesField.map((sizeField) => (
+                                        <Space key={sizeField.key}>
+                                          <Form.Item
+                                            noStyle
+                                            name={[
+                                              sizeField.name,
+                                              'size']}>
+                                            <Input style={{ width: '80px' }}
+                                                   size="small"
+                                                   placeholder="adSize"/>
+                                          </Form.Item>
+                                          {mappingFields.length > 1 ? (
+                                            <MinusCircleOutlined
+                                              className="dynamic-delete-button"
+                                              onClick={() => sizeSubOpt.remove(
+                                                mappingField.name)}
+                                            />
+                                          ) : null}
+                                        </Space>
+                                      ))}
+                                      <Button type="dashed"
+                                              onClick={() => sizeSubOpt.add(
+                                                { size: null })}
+                                              block>
+                                        + Size
+                                      </Button>
                                     </Space>
-                                  ))}
-                                  <Button type="dashed"
-                                          onClick={() => sizeSubOpt.add(
-                                            { size: null })}
-                                          block>
-                                    + Size
-                                  </Button>
-                                </Space>
-                              )}
-                            </Form.List>
+                                  )}
+                                </Form.List>
+                              </Space>
+                            ))}
                           </Space>
-                        ))}
-                      </Space>
-                    )}
-                  </Form.List>
-                  <Button type="dashed"
-                          onClick={() => subOpt.remove(slotField.name)}
-                          block>
-                    - Ad Slot
-                  </Button>
-                  <Form.List name={[slotField.name, 'slotTargeting']}>
-                    {(targetingFields, targetingOpt) => (
-                      <Space direction="vertical">
-                        {targetingFields.map((targetingField) => (
-                          <Space key={targetingField.key}>
-                            <Form.Item noStyle
-                                       name={[targetingField.name, 'name']}>
-                              <Input placeholder="name"/>
-                            </Form.Item>
+                        )}
+                      </Form.List>
+                      <Button type="dashed"
+                              onClick={() => subOpt.remove(slotField.name)}
+                              block>
+                        - Ad Slot
+                      </Button>
+                      <Form.List name={[slotField.name, 'slotTargeting']}>
+                        {(targetingFields, targetingOpt) => (
+                          <Space direction="vertical">
+                            {targetingFields.map((targetingField) => (
+                              <Space key={targetingField.key}>
+                                <Form.Item noStyle
+                                           name={[targetingField.name, 'name']}>
+                                  <Input placeholder="name"/>
+                                </Form.Item>
 
-                            <Form.Item noStyle
-                                       name={[targetingField.name, 'value']}>
-                              <Input placeholder="value"/>
-                            </Form.Item>
+                                <Form.Item noStyle
+                                           name={[
+                                             targetingField.name,
+                                             'value']}>
+                                  <Input placeholder="value"/>
+                                </Form.Item>
 
-                            {targetingFields.length > 1 ? (
-                              <MinusCircleOutlined
-                                className="dynamic-delete-button"
-                                onClick={() => targetingOpt.remove(
-                                  targetingField.name)}
-                              />
-                            ) : null}
+                                {targetingFields.length > 1 ? (
+                                  <MinusCircleOutlined
+                                    className="dynamic-delete-button"
+                                    onClick={() => targetingOpt.remove(
+                                      targetingField.name)}
+                                  />
+                                ) : null}
+                              </Space>
+                            ))}
+                            <Button type="dashed"
+                                    onClick={() => targetingOpt.add(
+                                      { name: null, value: null })}
+                                    block>
+                              + Ad targeting
+                            </Button>
                           </Space>
-                        ))}
-                        <Button type="dashed"
-                                onClick={() => targetingOpt.add(
-                                  { name: null, value: null })}
-                                block>
-                          + Ad targeting
-                        </Button>
-                      </Space>
-                    )}
-                  </Form.List>
-                </Space>
+                        )}
+                      </Form.List>
+                    </Space>
+
+                  </Collapse.Panel>
+                </Collapse>
               ))}
               <Button type="dashed"
                       onClick={() => subOpt.add(adSlotTemplate())}
@@ -188,6 +204,7 @@ const Body = ({ deviceData, initValues }) => {
                 + Ad Slot
               </Button>
             </Space>
+
           )}
         </Form.List>
         <Form.Item
@@ -209,7 +226,10 @@ const Body = ({ deviceData, initValues }) => {
       <JsonView src={slotsConfigFields} customizeCopy={(node) => {
         if (Object.keys(node).includes('slots')) {
           const devices = deviceData.devices.reverse().reduce(
-            (values, { name, viewPort }) => ({ [name]: viewPort.split('x').map(Number), ...values, }), {})
+            (values, { name, viewPort }) => ({
+              [name]: viewPort.split('x').
+                map(Number), ...values,
+            }), {})
           const slotsConfigData = { ...node, devices }
           return navigator.clipboard.writeText(
             `const slotsConfig = ${JSON.stringify(slotsConfigData, null, 2)}
