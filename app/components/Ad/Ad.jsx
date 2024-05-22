@@ -23,10 +23,8 @@ const Ad = (props) => {
     const adsSizeMapping = googletag.sizeMapping()
     const devices = { sm: [0, 0], md: [767, 0], lg: [1024, 0] }
     for (const [key, value] of Object.entries(sizeMapping)) {
-      if (value.length) {
-        adsSizeMapping.addSize(devices[key],
-          value.map((i) => i.split('x').map((v) => Number(v))))
-      }
+      adsSizeMapping.addSize(devices[key],
+        value.map((i) => i.split('x').map((v) => Number(v))))
     }
     return adsSizeMapping.build()
   }
@@ -40,8 +38,8 @@ const Ad = (props) => {
       setCollapseEmptyDiv(true)
     responsiveAdSlot.defineSizeMapping(getSizeMapping())
 
-    adSlot.slotTargeting.forEach(({name, value}) => {
-       responsiveAdSlot.setTargeting(name, value)
+    adSlot.slotTargeting.forEach(({ name, value }) => {
+      responsiveAdSlot.setTargeting(name, value)
     })
 
     return responsiveAdSlot
