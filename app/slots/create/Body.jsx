@@ -89,8 +89,14 @@ const Body = ({ deviceData, initValues }) => {
                   <Collapse.Panel
                     header={<Form.Item
                       style={{ width: '20%' }}
-                      name={[slotField.name, 'name']}>
-                      <Input placeholder="name"/>
+                      name={[slotField.name, 'name']}
+                      rules={[
+                        {
+                          required: true,
+                        },
+                      ]}
+                    >
+                      < Input placeholder="name"/>
                     </Form.Item>}
                     key={slotField.key}>
                     <Space direction="vertical" key={slotField.key}>
@@ -123,7 +129,21 @@ const Body = ({ deviceData, initValues }) => {
                                             noStyle
                                             name={[
                                               sizeField.name,
-                                              'size']}>
+                                              'size']}
+                                            rules={[
+                                              {
+                                                message: 'please use the right way define ad size 330x250',
+                                                validator: (_, value) => {
+                                                  if(value.includes('x')) {
+                                                    return Promise.resolve()
+                                                  } else {
+                                                    return Promise.reject(
+                                                      new Error('The new password that you entered do not match!'))
+                                                  }
+                                                },
+                                              },
+                                            ]}
+                                          >
                                             <Input style={{ width: '80px' }}
                                                    size="small"
                                                    placeholder="adSize"/>
