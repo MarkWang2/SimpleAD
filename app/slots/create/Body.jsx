@@ -113,7 +113,7 @@ const Body = ({ deviceData, initValues }) => {
                                   slotField.name,
                                   'sizeMapping',
                                   mappingField.name,
-                                  'device'])}</Space>
+                                  'device'])}:</Space>
                                 <Form.List name={[mappingField.name, 'sizes']}>
                                   {(sizesField, sizeSubOpt) => (
                                     <Space>
@@ -149,14 +149,10 @@ const Body = ({ deviceData, initValues }) => {
                           </Space>
                         )}
                       </Form.List>
-                      <Button type="dashed"
-                              onClick={() => subOpt.remove(slotField.name)}
-                              block>
-                        - Ad Slot
-                      </Button>
                       <Form.List name={[slotField.name, 'slotTargeting']}>
                         {(targetingFields, targetingOpt) => (
                           <Space direction="vertical">
+                            AdTargeting:
                             {targetingFields.map((targetingField) => (
                               <Space key={targetingField.key}>
                                 <Form.Item noStyle
@@ -189,6 +185,11 @@ const Body = ({ deviceData, initValues }) => {
                           </Space>
                         )}
                       </Form.List>
+                      <Button type="dashed"
+                              onClick={() => subOpt.remove(slotField.name)}
+                              block>
+                        - Ad Slot
+                      </Button>
                     </Space>
 
                   </Collapse.Panel>
