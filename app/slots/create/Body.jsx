@@ -1,8 +1,8 @@
 'use client'
 
 import React, { useState } from 'react'
-import { Button, Form, Input, Space, Collapse } from 'antd'
-import { MinusCircleOutlined } from '@ant-design/icons'
+import { Button, Form, Input, Space, Collapse, Tooltip } from 'antd'
+import { MinusCircleOutlined, InfoCircleOutlined } from '@ant-design/icons'
 import { createSlot } from '@/lib/actions'
 import JsonView from 'react18-json-view'
 import 'react18-json-view/src/style.css'
@@ -107,7 +107,12 @@ const Body = ({ deviceData, initValues }) => {
                       <Form.List name={[slotField.name, 'sizeMapping']}>
                         {(mappingFields, mappingOpt) => (
                           <Space direction="vertical">
-                            sizeMapping:
+                            <div>
+                              <span>sizeMapping: </span>
+                              <Tooltip title="example: 300x250">
+                                <InfoCircleOutlined/>
+                              </Tooltip>
+                            </div>
                             {mappingFields.map((mappingField) => (
                               <Space key={mappingField.key}>
                                 <Form.Item noStyle
@@ -134,11 +139,12 @@ const Body = ({ deviceData, initValues }) => {
                                               {
                                                 message: 'please use the right way define ad size 330x250',
                                                 validator: (_, value) => {
-                                                  if(value.includes('x')) {
+                                                  if (value.includes('x')) {
                                                     return Promise.resolve()
                                                   } else {
                                                     return Promise.reject(
-                                                      new Error('The new password that you entered do not match!'))
+                                                      new Error(
+                                                        'The new password that you entered do not match!'))
                                                   }
                                                 },
                                               },
