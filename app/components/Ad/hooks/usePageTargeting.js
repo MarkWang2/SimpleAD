@@ -10,6 +10,12 @@ const usePageTargeting = () => {
     }
   }
 
+  const setTargeting = (key, value) => {
+    googletag.cmd.push(() => {
+      googletag.pubads().setTargeting(key, value)
+    })
+  }
+
   const setUrlTargeting = () => {
     const params = new URLSearchParams(document.location.search)
     for (const key of params.keys()) {
@@ -47,6 +53,8 @@ const usePageTargeting = () => {
   useEffect(() => {
     setPageLevelTargeting()
   }, [])
+
+  return { setTargeting }
 }
 
 export default usePageTargeting

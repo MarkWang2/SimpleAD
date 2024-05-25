@@ -5,10 +5,14 @@ import styles from "./page.module.css";
 import Ad from '@/app/components/Ad'
 import { Button, Space, DatePicker } from 'antd';
 import usePageTargeting from '@/app/components/Ad/hooks/usePageTargeting'
+import { useEffect } from 'react'
 
 export default function Home() {
-  usePageTargeting()
+  const { setTargeting } = usePageTargeting()
 
+  useEffect(() => {
+    setTargeting('mark', 'wang')
+  }, [])
   return (
     <main className={styles.main}>
       <meta name="ad-targeting" content="google-ad-targeting"
