@@ -2,6 +2,7 @@
 
 import { AntdRegistry } from '@ant-design/nextjs-registry'
 import { Breadcrumb, Layout, Menu, theme } from 'antd'
+import { usePathname } from 'next/navigation'
 import Script from 'next/script'
 import React from 'react'
 import {
@@ -12,10 +13,6 @@ import {
 import { useRouter } from 'next/navigation'
 
 const { Header, Content, Footer, Sider } = Layout
-const items1 = ['1', '2', '3'].map((key) => ({
-  key,
-  label: `nav ${key}`,
-}))
 const items2 = [UserOutlined, LaptopOutlined, NotificationOutlined].map(
   (icon, index) => {
     const key = String(index + 1)
@@ -33,10 +30,31 @@ const items2 = [UserOutlined, LaptopOutlined, NotificationOutlined].map(
     }
   })
 
+const items =
+  [
+    {
+      key: `1`,
+      icon: React.createElement(UserOutlined),
+      label: `Ad slot`,
+      children: [
+        { key: 'slot', label: 'Create Slot' },
+        { key: 'device', label: 'Create Device' }],
+    },
+  ]
+
 const LayoutBody = ({ children }) => {
   const router = useRouter()
+  const paths = usePathname()
+  const pathNames = paths.split('/').
+    filter((path) => path).
+    map((link) => ({ path: `/${link}`, title: link }))
+  debugger
+
   const handleMenuClick = ({ item, key, keyPath, domEvent }) => {
-    router.push('/dashboard')
+    if (key === 'slot')
+      return router.push('/slots/create')
+    if (key === 'device')
+      return router.push('/device')
   }
   const {
     token: { colorBgContainer, borderRadiusLG },
@@ -50,39 +68,13 @@ const LayoutBody = ({ children }) => {
       <Script id="show-banner">
         {` var googletag = googletag || {}; googletag.cmd = googletag.cmd || [];`}
       </Script>
-      <Header
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-        }}
-      >
-        <div className="demo-logo"/>
-        <Menu
-          theme="dark"
-          mode="horizontal"
-          defaultSelectedKeys={['2']}
-          items={items1}
-          onClick={handleMenuClick}
-          style={{
-            flex: 1,
-            minWidth: 0,
-          }}
-        />
-      </Header>
       <Content
         style={{
           padding: '0 48px',
         }}
       >
-        <Breadcrumb
-          style={{
-            margin: '16px 0',
-          }}
-        >
-          <Breadcrumb.Item>Home</Breadcrumb.Item>
-          <Breadcrumb.Item>List</Breadcrumb.Item>
-          <Breadcrumb.Item>App</Breadcrumb.Item>
-        </Breadcrumb>
+        <Breadcrumb items={pathNames}/>
+
         <Layout
           style={{
             padding: '24px 0',
@@ -98,12 +90,13 @@ const LayoutBody = ({ children }) => {
           >
             <Menu
               mode="inline"
-              defaultSelectedKeys={['1']}
-              defaultOpenKeys={['sub1']}
+              defaultSelectedKeys={['slot']}
+              defaultOpenKeys={['1']}
               style={{
                 height: '100%',
               }}
-              items={items2}
+              onClick={handleMenuClick}
+              items={items}
             />
           </Sider>
           <Content
