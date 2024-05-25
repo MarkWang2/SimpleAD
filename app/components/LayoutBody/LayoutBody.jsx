@@ -11,6 +11,7 @@ import {
   UserOutlined,
 } from '@ant-design/icons'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 
 const { Header, Content, Footer, Sider } = Layout
 const items2 = [UserOutlined, LaptopOutlined, NotificationOutlined].map(
@@ -48,7 +49,16 @@ const LayoutBody = ({ children }) => {
   const pathNames = paths.split('/').
     filter((path) => path).
     map((link) => ({ path: `/${link}`, title: link }))
-  debugger
+
+  function itemRender (currentRoute, params, items, paths) {
+    const isLast = currentRoute?.path === items[items.length - 1]?.path
+
+    return isLast ? (
+      <span>{currentRoute.title}</span>
+    ) : (
+      <Link href={`/${paths.join('/')}`}>{currentRoute.title}</Link>
+    )
+  }
 
   const handleMenuClick = ({ item, key, keyPath, domEvent }) => {
     if (key === 'slot')
@@ -73,8 +83,7 @@ const LayoutBody = ({ children }) => {
           padding: '0 48px',
         }}
       >
-        <Breadcrumb items={pathNames}/>
-
+        <Breadcrumb itemRender={itemRender} items={pathNames}/>
         <Layout
           style={{
             padding: '24px 0',
