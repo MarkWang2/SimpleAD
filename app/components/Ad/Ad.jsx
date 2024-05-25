@@ -37,7 +37,9 @@ const Ad = (props) => {
     adSlot.slotTargeting.forEach(({ name, value }) => {
       responsiveAdSlot.setTargeting(name, value)
     })
-
+    window.SD ||= {}
+    window.SD.slots ||= []
+    window.SD.slots.push({ [id]: responsiveAdSlot })
     return responsiveAdSlot
   }
 

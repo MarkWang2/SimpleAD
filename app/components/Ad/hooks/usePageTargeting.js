@@ -54,7 +54,14 @@ const usePageTargeting = () => {
     setPageLevelTargeting()
   }, [])
 
-  return { setTargeting }
+  const refreshAdById = (adId) => {
+    googletag.cmd.push(() => {
+      const slot = window.SD.slots.find(({ id }) => id === adId)
+      if (slot) { googletag.pubads().refresh([slot]) }
+    })
+  }
+
+  return { setTargeting, refreshAdById }
 }
 
 export default usePageTargeting
