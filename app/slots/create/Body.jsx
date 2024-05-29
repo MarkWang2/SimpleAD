@@ -139,7 +139,7 @@ const Body = ({ deviceData, initValues }) => {
                                               {
                                                 message: 'please use the right way define ad size 330x250',
                                                 validator: (_, value) => {
-                                                  if (value.includes('x')) {
+                                                  if (value.includes('x') || value.includes('fluid')) {
                                                     return Promise.resolve()
                                                   } else {
                                                     return Promise.reject(
