@@ -47,7 +47,7 @@ const LayoutBody = ({ children }) => {
     if (key === 'slot')
       return router.push('/slots')
     if (key === 'device')
-      return router.push('/device')
+      return router.push('/devices')
   }
   const {
     token: { colorBgContainer, borderRadiusLG },

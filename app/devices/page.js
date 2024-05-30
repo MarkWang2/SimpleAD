@@ -1,5 +1,5 @@
 import React  from 'react'
-import Body from '@/app/device/Body'
+import Body from '@/app/devices/Body'
 
 async function getData() {
   const res = await fetch('http://localhost:3001/api/devices')
