@@ -105,7 +105,7 @@ const Body = ({ deviceData, initValues }) => {
                           <Space direction="vertical">
                             <div>
                               <span>sizeMapping: </span>
-                              <Tooltip title="example: 300x250">
+                              <Tooltip title="example: 300x250 fluid">
                                 <InfoCircleOutlined/>
                               </Tooltip>
                             </div>
@@ -135,12 +135,13 @@ const Body = ({ deviceData, initValues }) => {
                                               {
                                                 message: 'please use the right way define ad size 330x250',
                                                 validator: (_, value) => {
-                                                  if (value.includes('x') || value.includes('fluid')) {
+                                                  if (value.includes('x') ||
+                                                    value.includes('fluid')) {
                                                     return Promise.resolve()
                                                   } else {
                                                     return Promise.reject(
                                                       new Error(
-                                                        'The new password that you entered do not match!'))
+                                                        'Wrong ad format'))
                                                   }
                                                 },
                                               },
@@ -235,7 +236,7 @@ const Body = ({ deviceData, initValues }) => {
           <Button type="primary" htmlType="submit">
             {pending ? 'loading...' : 'Save'}
           </Button>
-
+          &nbsp;
           <Button onClick={() => { form.resetFields() }} type="default">
             Discard
           </Button>

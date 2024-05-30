@@ -1,8 +1,8 @@
 'use client'
 
 import React, { useState } from 'react'
-import { CloseOutlined } from '@ant-design/icons'
-import { Button, Form, Input, Space, Typography } from 'antd'
+import { CloseOutlined, InfoCircleOutlined } from '@ant-design/icons'
+import { Button, Form, Input, Space, Tooltip, Typography } from 'antd'
 import { createDevice } from '@/lib/actions'
 
 const Body = ({ data }) => {
@@ -31,7 +31,14 @@ const Body = ({ data }) => {
       autoComplete="off"
       onFinish={onFinish}
     >
-      <Form.Item label="List">
+      <Form.Item label={
+        <>
+          <span>Device & ViewPort &nbsp;</span>
+          <Tooltip title="example: 0x0, 767x0">
+            <InfoCircleOutlined/>
+          </Tooltip>
+        </>
+      }>
         <Form.List name="devices">
           {(subFields, subOpt) => (
             <div
@@ -46,7 +53,20 @@ const Body = ({ data }) => {
                   <Form.Item noStyle name={[subField.name, 'name']}>
                     <Input placeholder="Device Name"/>
                   </Form.Item>
-                  <Form.Item noStyle name={[subField.name, 'viewPort']}>
+                  <Form.Item noStyle name={[subField.name, 'viewPort']} rules={[
+                    {
+                      message: 'please use the right way define device viewport like 0x0, 767x0',
+                      validator: (_, value) => {
+                        if (value.includes('x')) {
+                          return Promise.resolve()
+                        } else {
+                          return Promise.reject(
+                            new Error(
+                              'Wrong viewport format'))
+                        }
+                      },
+                    },
+                  ]}>
                     <Input placeholder="Min. ViewPort"/>
                   </Form.Item>
                   <CloseOutlined
@@ -74,6 +94,7 @@ const Body = ({ data }) => {
         <Button type="primary" htmlType="submit">
           {pending ? 'loading...' : 'Save'}
         </Button>
+        &nbsp;
         <Button onClick={() => { form.resetFields() }} type="default">
           Discard
         </Button>
