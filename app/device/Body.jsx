@@ -1,14 +1,17 @@
 'use client'
 
-import React from 'react'
+import React, { useState } from 'react'
 import { CloseOutlined } from '@ant-design/icons'
 import { Button, Form, Input, Space, Typography } from 'antd'
 import { createDevice } from '@/lib/actions'
 
 const Body = ({ data }) => {
   const [form] = Form.useForm()
+  const [pending, setPending] = useState(false)
   const onFinish = async (values) => {
+    setPending(true)
     await createDevice(values.devices)
+    setPending(false)
   }
 
   return (
@@ -64,15 +67,14 @@ const Body = ({ data }) => {
 
       <Form.Item
         wrapperCol={{
-          offset: 8,
-          span: 16,
+          offset: 12,
+          span: 12,
         }}
       >
         <Button type="primary" htmlType="submit">
-          Save
+          {pending ? 'loading...' : 'Save'}
         </Button>
-
-        <Button type="default" htmlType="submit">
+        <Button onClick={() => { form.resetFields() }} type="default">
           Discard
         </Button>
       </Form.Item>

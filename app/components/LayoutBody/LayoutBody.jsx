@@ -8,7 +8,6 @@ import React from 'react'
 import {
   LaptopOutlined,
   NotificationOutlined,
-  UserOutlined,
 } from '@ant-design/icons'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
@@ -19,7 +18,7 @@ const items =
   [
     {
       key: `1`,
-      icon: React.createElement(UserOutlined),
+      icon: React.createElement(LaptopOutlined),
       label: `Ad Configuration`,
       children: [
         { key: 'slot', label: 'Slot Setup' },
@@ -46,7 +45,7 @@ const LayoutBody = ({ children }) => {
 
   const handleMenuClick = ({ item, key, keyPath, domEvent }) => {
     if (key === 'slot')
-      return router.push('/slots/create')
+      return router.push('/slots')
     if (key === 'device')
       return router.push('/device')
   }

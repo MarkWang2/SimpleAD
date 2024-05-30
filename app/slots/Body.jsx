@@ -58,10 +58,6 @@ const Body = ({ deviceData, initValues }) => {
     }
   }
 
-  const onChange = (key) => {
-    console.log(key)
-  }
-
   return (
     <>
       <Form
@@ -240,8 +236,7 @@ const Body = ({ deviceData, initValues }) => {
             {pending ? 'loading...' : 'Save'}
           </Button>
 
-          <Button onClick={() => { form.resetFields() }} type="default"
-                  htmlType="submit">
+          <Button onClick={() => { form.resetFields() }} type="default">
             Discard
           </Button>
         </Form.Item>
