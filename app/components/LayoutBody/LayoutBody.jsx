@@ -14,32 +14,16 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 
 const { Header, Content, Footer, Sider } = Layout
-const items2 = [UserOutlined, LaptopOutlined, NotificationOutlined].map(
-  (icon, index) => {
-    const key = String(index + 1)
-    return {
-      key: `sub${key}`,
-      icon: React.createElement(icon),
-      label: `subnav ${key}`,
-      children: new Array(4).fill(null).map((_, j) => {
-        const subKey = index * 4 + j + 1
-        return {
-          key: subKey,
-          label: `option${subKey}`,
-        }
-      }),
-    }
-  })
 
 const items =
   [
     {
       key: `1`,
       icon: React.createElement(UserOutlined),
-      label: `Ad slot`,
+      label: `Ad Configuration`,
       children: [
-        { key: 'slot', label: 'Create Slot' },
-        { key: 'device', label: 'Create Device' }],
+        { key: 'slot', label: 'Slot Setup' },
+        { key: 'device', label: 'Devices & Viewports' }],
     },
   ]
 
