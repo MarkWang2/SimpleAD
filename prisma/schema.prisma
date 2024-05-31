@@ -1,0 +1,67 @@
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Device {
+  id              Int               @id @default(autoincrement())
+  name            String            @unique
+  viewPort        String
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  SlotSizeMapping SlotSizeMapping[]
+}
+
+model Page {
+  id        Int             @id @default(autoincrement())
+  name      String
+  adUnit    String?
+  Targeting PageTargeting[]
+  AdSlot    AdSlot[]
+  createdAt DateTime?       @default(now())
+  updatedAt DateTime?       @updatedAt
+}
+
+model PageTargeting {
+  id        Int      @id @default(autoincrement())
+  name      String
+  page      Page     @relation(fields: [pageId], references: [id])
+  pageId    Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model SlotTargeting {
+  id        Int      @id @default(autoincrement())
+  name      String
+  value     String
+  slot      AdSlot   @relation(fields: [slotId], references: [id])
+  slotId    Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model AdSlot {
+  id              Int               @id @default(autoincrement())
+  name            String
+  page            Page              @relation(fields: [pageId], references: [id])
+  pageId          Int
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  SlotTargeting   SlotTargeting[]
+  SlotSizeMapping SlotSizeMapping[]
+  adUnit          String
+}
+
+model SlotSizeMapping {
+  id       Int    @id @default(autoincrement())
+  slot     AdSlot @relation(fields: [slotId], references: [id])
+  slotId   Int
+  device   Device @relation(fields: [deviceId], references: [id])
+  deviceId Int
+  size     String
+}

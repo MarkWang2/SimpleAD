@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Ad /> should render the ad with correct attr when is oop ad 1`] = `
+"<div>
+    <div data-testid="OOP1" id="OOP1" class="ad-placeholder" data-position="OOP1"></div>
+</div>"
+`;
+
+exports[`<Ad /> should render the ad with correct attr when set id and position 1`] = `
+"<div>
+    <div data-testid="lead2" id="lead2" class="ad-placeholder" data-position="lead2"></div>
+</div>"
+`;
