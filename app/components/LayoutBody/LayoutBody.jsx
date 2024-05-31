@@ -3,7 +3,6 @@
 import { AntdRegistry } from '@ant-design/nextjs-registry'
 import { Breadcrumb, Layout, Menu, theme } from 'antd'
 import { usePathname } from 'next/navigation'
-import Script from 'next/script'
 import React from 'react'
 import {
   LaptopOutlined,
@@ -17,12 +16,17 @@ const { Header, Content, Footer, Sider } = Layout
 const items =
   [
     {
-      key: `1`,
+      key: `Ad Configuration`,
       icon: React.createElement(LaptopOutlined),
       label: `Ad Configuration`,
       children: [
         { key: 'slot', label: 'Slot Setup' },
         { key: 'device', label: 'Devices & Viewports' }],
+    },
+    {
+      key: `example`,
+      icon: React.createElement(NotificationOutlined),
+      label: `Example`,
     },
   ]
 
@@ -48,19 +52,14 @@ const LayoutBody = ({ children }) => {
       return router.push('/slots')
     if (key === 'device')
       return router.push('/devices')
+    if (key === 'example')
+      window.location.href = "/example";
   }
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken()
   return (<AntdRegistry>
     <Layout>
-      <Script
-        async
-        src="https://www.googletagservices.com/tag/js/gpt.js"
-      />
-      <Script id="show-banner">
-        {` var googletag = googletag || {}; googletag.cmd = googletag.cmd || [];`}
-      </Script>
       <Content
         style={{
           padding: '0 48px',
@@ -82,8 +81,8 @@ const LayoutBody = ({ children }) => {
           >
             <Menu
               mode="inline"
-              defaultSelectedKeys={['slot']}
-              defaultOpenKeys={['1']}
+              // defaultSelectedKeys={['slot']}
+              defaultOpenKeys={['Ad Configuration']}
               style={{
                 height: '100%',
               }}
@@ -108,7 +107,6 @@ const LayoutBody = ({ children }) => {
           textAlign: 'center',
         }}
       >
-        Ant Design ©{new Date().getFullYear()} Created by Ant UED
       </Footer>
     </Layout>
   </AntdRegistry>)
