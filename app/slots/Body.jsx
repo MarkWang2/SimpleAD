@@ -84,7 +84,7 @@ const Body = ({ deviceData, initValues }) => {
                 <Collapse key={slotField.key} defaultActiveKey={['1']}>
                   <Collapse.Panel
                     header={<Form.Item
-                      style={{ width: '20%' }}
+                      style={{ width: '20%', marginBottom: 0 }}
                       name={[slotField.name, 'name']}
                       rules={[
                         {
