@@ -1,0 +1,31 @@
+{
+  "name": "simple-ad",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -p 3001",
+    "dev-s": "NODE_OPTIONS='--inspect' next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@ant-design/nextjs-registry": "^1.0.0",
+    "@prisma/client": "^5.13.0",
+    "antd": "^5.17.0",
+    "classnames": "2.3.2",
+    "next": "14.2.3",
+    "react": "^18",
+    "react-dom": "^18",
+    "react-router-dom": "^6.23.1",
+    "react18-json-view": "^0.2.8",
+    "sass": "^1.76.0",
+    "sqlite3": "^5.1.7",
+    "swr": "^2.2.5"
+  },
+  "devDependencies": {
+    "eslint": "^8",
+    "eslint-config-next": "14.2.3",
+    "prisma": "^5.13.0"
+  }
+}
