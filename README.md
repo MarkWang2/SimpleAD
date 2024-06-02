@@ -26,7 +26,6 @@ Step 3：
 Copy [Ad components](app%2Fcomponents%2FAd) to your project.
 
 Step 4：
-
 Copy the config data to replace [slotsConfig.js](app%2Fcomponents%2FAd%2FslotsConfig.js) in your project.
 
 <img src="doc/copy-data.png" alt="drawing" width="500"/>
