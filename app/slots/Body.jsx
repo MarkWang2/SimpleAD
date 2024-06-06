@@ -58,6 +58,19 @@ const Body = ({ deviceData, initValues }) => {
     }
   }
 
+  const onSlotNameSearch = (e) => {
+    const value = e.target.value
+    if (value === '') {
+      form.setFieldsValue(initValues)
+      return
+    }
+
+    const slots = initValues.slots.filter((slot) => {
+      return slot.name.toLowerCase().indexOf(value) >= 0
+    })
+    form.setFieldsValue({ slots })
+  }
+
   return (
     <>
       <Form
@@ -76,6 +89,8 @@ const Body = ({ deviceData, initValues }) => {
         initialValues={initValues}
         onFinish={onFinish}
       >
+        <Input placeholder="Search by name" onChange={onSlotNameSearch}
+               style={{ width: 200 }} allowClear/>
         <Form.List name="slots">
           {(slotsFields, subOpt) => (
             <Space direction="vertical" style={{ width: '100%' }}>
