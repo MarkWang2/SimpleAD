@@ -55,19 +55,27 @@ const Body = ({ deviceData, initValues }) => {
     })
     return {
       'name': '',
+      'pageName': '',
       'adUnit': '', sizeMapping,
     }
   }
 
   const onSlotNameSearch = (e) => {
-    const value = e.target.value
+    searchSlotByField('name', e.target.value)
+  }
+
+  const onPageNameSearch = (e) => {
+    searchSlotByField('pageName', e.target.value)
+  }
+
+  const searchSlotByField = (field, value) => {
     if (value === '') {
       form.setFieldsValue(initValues)
       return
     }
 
     const slots = initValues.slots.filter((slot) => {
-      return slot.name.toLowerCase().indexOf(value) >= 0
+      return slot[field].toLowerCase().indexOf(value) >= 0
     })
     form.setFieldsValue({ slots })
   }
@@ -91,6 +99,8 @@ const Body = ({ deviceData, initValues }) => {
         onFinish={onFinish}
       >
         <Input placeholder="Search by name" onChange={onSlotNameSearch}
+               style={{ width: 200 }} allowClear/>
+        <Input placeholder="Search by pageName" onChange={onPageNameSearch}
                style={{ width: 200 }} allowClear/>
         <Form.List name="slots">
           {(slotsFields, subOpt) => (
