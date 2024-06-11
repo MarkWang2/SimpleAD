@@ -7,6 +7,7 @@ export async function GET () {
   const slots = await prisma.AdSlot.findMany({
     select: {
       name: true,
+      pageName: true,
       adUnit: true,
       SlotTargeting: {
         select: {

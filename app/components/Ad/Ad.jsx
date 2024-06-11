@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useEffect } from 'react'
+import { usePathname, useSearchParams } from 'next/navigation'
 import classNames from 'classnames'
 import { getSlotConfigById } from './helper'
 
@@ -11,7 +12,9 @@ const Ad = (props) => {
     id, position, isOOP, className, adUnit,
   } = props
 
-  const adSlot = getSlotConfigById(id)
+  const pathname = usePathname()
+
+  const adSlot = getSlotConfigById(id, pathname)
 
   const getSizeMapping = () => {
     const sizeMapping = adSlot.sizeMapping

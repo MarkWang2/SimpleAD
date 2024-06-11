@@ -21,9 +21,10 @@ const Body = ({ deviceData, initValues }) => {
   const slotsConfigFields = Form.useWatch((values) => {
     return {
       slots: values?.slots?.map(
-        ({ name, adUnit, slotTargeting, sizeMapping }) => {
+        ({ name, pageName, adUnit, slotTargeting, sizeMapping }) => {
           return {
             name,
+            pageName,
             adUnit,
             slotTargeting,
             sizeMapping: buildSizeMapping(sizeMapping),
@@ -54,8 +55,29 @@ const Body = ({ deviceData, initValues }) => {
     })
     return {
       'name': '',
+      'pageName': '',
       'adUnit': '', sizeMapping,
     }
+  }
+
+  const onSlotNameSearch = (e) => {
+    searchSlotByField('name', e.target.value)
+  }
+
+  const onPageNameSearch = (e) => {
+    searchSlotByField('pageName', e.target.value)
+  }
+
+  const searchSlotByField = (field, value) => {
+    if (value === '') {
+      form.setFieldsValue(initValues)
+      return
+    }
+
+    const slots = initValues.slots.filter((slot) => {
+      return slot[field].toLowerCase().indexOf(value) >= 0
+    })
+    form.setFieldsValue({ slots })
   }
 
   return (
@@ -76,23 +98,38 @@ const Body = ({ deviceData, initValues }) => {
         initialValues={initValues}
         onFinish={onFinish}
       >
+        <Input placeholder="Search by name" onChange={onSlotNameSearch}
+               style={{ width: 200 }} allowClear/>
+        <Input placeholder="Search by pageName" onChange={onPageNameSearch}
+               style={{ width: 200 }} allowClear/>
         <Form.List name="slots">
           {(slotsFields, subOpt) => (
             <Space direction="vertical" style={{ width: '100%' }}>
               {slotsFields.map((slotField) => (
                 <Collapse key={slotField.key} defaultActiveKey={['1']}>
                   <Collapse.Panel
-                    header={<Form.Item
-                      style={{ width: '20%', marginBottom: 0 }}
-                      name={[slotField.name, 'name']}
-                      rules={[
-                        {
-                          required: true,
-                        },
-                      ]}
-                    >
-                      < Input placeholder="name"/>
-                    </Form.Item>}
+                    header={
+                        <Space>
+                            <Form.Item
+                                style={{ marginBottom: 0}}
+                                label={'name'}
+                                name={[slotField.name, 'name']}
+                                rules={[
+                                    {
+                                        required: true,
+                                    },
+                                ]}
+                            >
+                                < Input placeholder="name"/>
+                            </Form.Item>
+                            <Form.Item
+                                style={{marginBottom: 0}}
+                                label={'pageName'}
+                                name={[slotField.name, 'pageName']}>
+                                < Input placeholder="pageName"/>
+                            </Form.Item>
+                        </Space>
+                    }
                     key={slotField.key}>
                     <Space direction="vertical" key={slotField.key}>
                       <Form.Item label={'Ad unit'}
