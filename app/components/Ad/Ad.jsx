@@ -13,14 +13,8 @@ const Ad = (props) => {
   } = props
 
   const pathname = usePathname()
-  const searchParams = useSearchParams()
-  useEffect(() => {
-    // Do something here...
-    console.log(pathname)
-    debugger
-  }, [pathname, searchParams])
 
-  const adSlot = getSlotConfigById(id)
+  const adSlot = getSlotConfigById(id, pathname)
 
   const getSizeMapping = () => {
     const sizeMapping = adSlot.sizeMapping

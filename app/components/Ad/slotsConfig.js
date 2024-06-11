@@ -2,6 +2,7 @@ const slotsConfig = {
   "slots": [
     {
       "name": "lead2",
+      "pageName": "example",
       "adUnit": "lead2",
       "slotTargeting": [
         {
@@ -27,18 +28,20 @@ const slotsConfig = {
     },
     {
       "name": "cxzxc",
+      "pageName": "new",
       "adUnit": "zxc",
       "slotTargeting": [],
       "sizeMapping": {
         "sm": [
-          "df",
-          "sdf"
+          "23x4",
+          "4x5"
         ],
         "md": [
-          "sdf"
+          "23x3",
+          "27x37"
         ],
         "lg": [
-          "sdf"
+          "3x5"
         ]
       }
     }
