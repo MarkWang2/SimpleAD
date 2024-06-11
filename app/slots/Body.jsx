@@ -21,9 +21,10 @@ const Body = ({ deviceData, initValues }) => {
   const slotsConfigFields = Form.useWatch((values) => {
     return {
       slots: values?.slots?.map(
-        ({ name, adUnit, slotTargeting, sizeMapping }) => {
+        ({ name, pageName, adUnit, slotTargeting, sizeMapping }) => {
           return {
             name,
+            pageName,
             adUnit,
             slotTargeting,
             sizeMapping: buildSizeMapping(sizeMapping),
@@ -97,17 +98,28 @@ const Body = ({ deviceData, initValues }) => {
               {slotsFields.map((slotField) => (
                 <Collapse key={slotField.key} defaultActiveKey={['1']}>
                   <Collapse.Panel
-                    header={<Form.Item
-                      style={{ width: '20%', marginBottom: 0 }}
-                      name={[slotField.name, 'name']}
-                      rules={[
-                        {
-                          required: true,
-                        },
-                      ]}
-                    >
-                      < Input placeholder="name"/>
-                    </Form.Item>}
+                    header={
+                        <Space>
+                            <Form.Item
+                                style={{ marginBottom: 0}}
+                                label={'name'}
+                                name={[slotField.name, 'name']}
+                                rules={[
+                                    {
+                                        required: true,
+                                    },
+                                ]}
+                            >
+                                < Input placeholder="name"/>
+                            </Form.Item>
+                            <Form.Item
+                                style={{marginBottom: 0}}
+                                label={'pageName'}
+                                name={[slotField.name, 'pageName']}>
+                                < Input placeholder="pageName"/>
+                            </Form.Item>
+                        </Space>
+                    }
                     key={slotField.key}>
                     <Space direction="vertical" key={slotField.key}>
                       <Form.Item label={'Ad unit'}

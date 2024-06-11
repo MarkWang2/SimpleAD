@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useEffect } from 'react'
+import { usePathname, useSearchParams } from 'next/navigation'
 import classNames from 'classnames'
 import { getSlotConfigById } from './helper'
 
@@ -10,6 +11,14 @@ const Ad = (props) => {
   const {
     id, position, isOOP, className, adUnit,
   } = props
+
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
+  useEffect(() => {
+    // Do something here...
+    console.log(pathname)
+    debugger
+  }, [pathname, searchParams])
 
   const adSlot = getSlotConfigById(id)
 
